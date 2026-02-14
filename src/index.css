@@ -91,20 +91,55 @@ body {
   animation: vivid-shimmer 3.5s linear infinite;
 }
 
-/* ── Scroll Snap ── */
+/* ── Demo floating orbs ── */
 
-.snap-container {
-  height: 100vh;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+@keyframes demoFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-14px); }
 }
 
-.snap-section {
-  min-height: 100vh;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
+.demo-float {
+  animation: demoFloat 4s ease-in-out infinite;
+}
+
+@keyframes demoPatternDrift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(8px, -6px); }
+  100% { transform: translate(0, 0); }
+}
+
+.demo-pattern-drift {
+  animation: demoPatternDrift 12s ease-in-out infinite;
+}
+
+/* ── Vivid page — responsive scroll ── */
+
+.vivid-page {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile: scroll snap — one block at a time */
+@media (max-width: 767px) {
+  .vivid-page {
+    scroll-snap-type: y mandatory;
+  }
+
+  .vivid-snap {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
+
+/* Desktop: smooth scroll */
+@media (min-width: 768px) {
+  .vivid-page {
+    scroll-behavior: smooth;
+  }
 }
 
 
