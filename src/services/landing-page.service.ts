@@ -71,7 +71,7 @@ export async function createLandingPage(
 
 export async function updateLandingPage(
   id: string,
-  updates: Partial<Pick<LandingPage, 'title' | 'slug' | 'bio' | 'theme' | 'avatar_url' | 'is_default'>>
+  updates: Partial<Pick<LandingPage, 'title' | 'slug' | 'bio' | 'theme' | 'avatar_url' | 'is_default' | 'customization'>>
 ): Promise<LandingPage> {
   const { data, error } = await supabase
     .from('landing_pages')

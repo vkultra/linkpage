@@ -7,7 +7,7 @@ import {
   deleteLink,
   reorderLinks,
 } from '../services/link.service'
-import type { Link } from '../types'
+import type { Link, LinkType } from '../types'
 
 export function useLinks(landingPageId: string | undefined) {
   const { user } = useAuth()
@@ -30,7 +30,7 @@ export function useLinks(landingPageId: string | undefined) {
     fetchLinks()
   }, [fetchLinks])
 
-  async function create(input: { title: string; url: string }) {
+  async function create(input: { title: string; url?: string; type?: LinkType }) {
     if (!user || !landingPageId) throw new Error('Not authenticated')
     const position = links.length
     const link = await createLink(landingPageId, user.id, input, position)

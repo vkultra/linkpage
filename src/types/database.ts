@@ -19,6 +19,7 @@ export type Database = {
           avatar_url: string | null
           bio: string
           created_at: string
+          customization: Json
           id: string
           is_default: boolean
           slug: string
@@ -31,6 +32,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string
           created_at?: string
+          customization?: Json
           id?: string
           is_default?: boolean
           slug?: string
@@ -43,6 +45,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string
           created_at?: string
+          customization?: Json
           id?: string
           is_default?: boolean
           slug?: string
@@ -70,6 +73,7 @@ export type Database = {
           landing_page_id: string
           position: number
           title: string
+          type: string
           updated_at: string
           url: string
           user_id: string
@@ -82,8 +86,9 @@ export type Database = {
           landing_page_id: string
           position?: number
           title: string
+          type?: string
           updated_at?: string
-          url: string
+          url?: string
           user_id: string
         }
         Update: {
@@ -94,6 +99,7 @@ export type Database = {
           landing_page_id?: string
           position?: number
           title?: string
+          type?: string
           updated_at?: string
           url?: string
           user_id?: string

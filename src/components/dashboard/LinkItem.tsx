@@ -3,7 +3,8 @@ import type { Link } from '../../types'
 import { getFaviconUrl } from '../../lib/utils'
 import { LinkForm } from './LinkForm'
 import { Button } from '../ui/Button'
-import { Pencil, Trash2, Eye, EyeOff, GripVertical } from 'lucide-react'
+import { Input } from '../ui/Input'
+import { Pencil, Trash2, Eye, EyeOff, GripVertical, Type } from 'lucide-react'
 
 interface LinkItemProps {
   link: Link
@@ -14,8 +15,22 @@ interface LinkItemProps {
 
 export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItemProps) {
   const [editing, setEditing] = useState(false)
+  const isHeader = link.type === 'header'
 
   if (editing) {
+    if (isHeader) {
+      return (
+        <HeaderEditForm
+          initialTitle={link.title}
+          onSave={async (title) => {
+            await onUpdate(link.id, { title })
+            setEditing(false)
+          }}
+          onCancel={() => setEditing(false)}
+        />
+      )
+    }
+
     return (
       <div className="rounded-lg border border-gray-200 bg-white p-4">
         <LinkForm
@@ -30,6 +45,48 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
     )
   }
 
+  // Header rendering
+  if (isHeader) {
+    return (
+      <div className="flex items-center gap-3 rounded-lg border border-dashed border-gray-300 bg-gray-50 px-3 py-2.5">
+        <button
+          className="cursor-grab touch-none text-gray-400 hover:text-gray-600"
+          aria-label="Arrastar para reordenar"
+          {...dragHandleProps}
+        >
+          <GripVertical className="h-5 w-5" />
+        </button>
+
+        <Type className="h-4 w-4 flex-shrink-0 text-gray-400" />
+
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold uppercase tracking-wider text-gray-600">{link.title}</p>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setEditing(true)}
+            title="Editar"
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onDelete(link.id)}
+            title="Excluir"
+            className="text-red-600 hover:bg-red-50 hover:text-red-700"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  // Link rendering
   return (
     <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 py-3">
       <button
@@ -84,6 +141,40 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
         >
           <Trash2 className="h-4 w-4" />
         </Button>
+      </div>
+    </div>
+  )
+}
+
+function HeaderEditForm({ initialTitle, onSave, onCancel }: { initialTitle: string; onSave: (title: string) => Promise<void>; onCancel: () => void }) {
+  const [title, setTitle] = useState(initialTitle)
+  const [loading, setLoading] = useState(false)
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white p-4">
+      <div className="space-y-3">
+        <Input
+          id="edit-header-title"
+          label="Texto do cabeçalho"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <div className="flex justify-end gap-2">
+          <Button type="button" variant="secondary" size="sm" onClick={onCancel}>
+            Cancelar
+          </Button>
+          <Button
+            size="sm"
+            loading={loading}
+            onClick={async () => {
+              if (!title.trim()) return
+              setLoading(true)
+              try { await onSave(title.trim()) } finally { setLoading(false) }
+            }}
+          >
+            Salvar
+          </Button>
+        </div>
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase'
-import type { Link } from '../types'
+import type { Link, LinkType } from '../types'
 
 export async function getLinks(landingPageId: string): Promise<Link[]> {
   const { data, error } = await supabase
@@ -14,7 +14,7 @@ export async function getLinks(landingPageId: string): Promise<Link[]> {
 export async function createLink(
   landingPageId: string,
   userId: string,
-  input: { title: string; url: string },
+  input: { title: string; url?: string; type?: LinkType },
   position: number
 ): Promise<Link> {
   const { data, error } = await supabase
@@ -23,7 +23,8 @@ export async function createLink(
       landing_page_id: landingPageId,
       user_id: userId,
       title: input.title,
-      url: input.url,
+      url: input.url ?? '',
+      type: input.type ?? 'link',
       position,
     })
     .select()
