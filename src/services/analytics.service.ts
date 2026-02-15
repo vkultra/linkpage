@@ -7,7 +7,7 @@ export async function getAnalyticsSummary(
   end: Date
 ): Promise<AnalyticsSummary> {
   const { data, error } = await supabase.rpc('get_analytics_summary', {
-    p_landing_page_id: pageId,
+    p_landing_page_id: pageId as string,
     p_start: start.toISOString(),
     p_end: end.toISOString(),
   })
@@ -22,7 +22,7 @@ export async function getViewsByDay(
   end: Date
 ): Promise<ViewByDay[]> {
   const { data, error } = await supabase.rpc('get_views_by_day', {
-    p_landing_page_id: pageId,
+    p_landing_page_id: pageId as string,
     p_start: start.toISOString(),
     p_end: end.toISOString(),
   })
@@ -37,7 +37,7 @@ export async function getTopLinks(
   end: Date
 ): Promise<TopLink[]> {
   const { data, error } = await supabase.rpc('get_top_links', {
-    p_landing_page_id: pageId,
+    p_landing_page_id: pageId as string,
     p_start: start.toISOString(),
     p_end: end.toISOString(),
   })
@@ -52,7 +52,7 @@ export async function getHourlyDistribution(
   end: Date
 ): Promise<HourlyData[]> {
   const { data, error } = await supabase.rpc('get_hourly_distribution', {
-    p_landing_page_id: pageId,
+    p_landing_page_id: pageId as string,
     p_start: start.toISOString(),
     p_end: end.toISOString(),
   })
@@ -67,7 +67,7 @@ export async function getGeoDistribution(
   end: Date
 ): Promise<GeoData[]> {
   const { data, error } = await supabase.rpc('get_geo_distribution', {
-    p_landing_page_id: pageId,
+    p_landing_page_id: pageId as string,
     p_start: start.toISOString(),
     p_end: end.toISOString(),
   })
