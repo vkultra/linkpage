@@ -171,6 +171,44 @@ body {
 
 /* ── Vivid page — responsive scroll ── */
 
+/* ── react-day-picker theme ── */
+
+.rdp-custom {
+  --rdp-accent-color: #111827;
+  --rdp-accent-background-color: #f3f4f6;
+  --rdp-range_middle-background-color: #f3f4f6;
+  --rdp-range_middle-color: #111827;
+  --rdp-range_start-color: #fff;
+  --rdp-range_start-date-background-color: #111827;
+  --rdp-range_end-color: #fff;
+  --rdp-range_end-date-background-color: #111827;
+  --rdp-today-color: #111827;
+  --rdp-selected-border: 2px solid #111827;
+  --rdp-day-height: 30px;
+  --rdp-day-width: 30px;
+  --rdp-day_button-height: 28px;
+  --rdp-day_button-width: 28px;
+  --rdp-day_button-border-radius: 6px;
+  --rdp-nav-height: 2rem;
+  --rdp-nav_button-height: 1.75rem;
+  --rdp-nav_button-width: 1.75rem;
+  font-size: 0.8125rem;
+}
+
+.dark .rdp-custom {
+  --rdp-accent-color: #e2e8f0;
+  --rdp-accent-background-color: #334155;
+  --rdp-range_middle-background-color: #334155;
+  --rdp-range_middle-color: #e2e8f0;
+  --rdp-range_start-color: #0f172a;
+  --rdp-range_start-date-background-color: #e2e8f0;
+  --rdp-range_end-color: #0f172a;
+  --rdp-range_end-date-background-color: #e2e8f0;
+  --rdp-today-color: #e2e8f0;
+  --rdp-selected-border: 2px solid #e2e8f0;
+  color: #e2e8f0;
+}
+
 .vivid-page {
   height: 100vh;
   height: 100dvh;

@@ -7,14 +7,16 @@ interface PublicLinkItemProps {
   title: string
   url: string
   resolved: ResolvedStyles
+  onClick?: () => void
 }
 
-export function PublicLinkItem({ title, url, resolved }: PublicLinkItemProps) {
+export function PublicLinkItem({ title, url, resolved, onClick }: PublicLinkItemProps) {
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={onClick}
       className={cn(
         'flex min-h-[52px] items-center gap-3 px-5 py-4 shadow-sm transition-all duration-200 active:scale-[0.98]',
         resolved.buttonRadius,

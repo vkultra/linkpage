@@ -222,6 +222,61 @@ export type Database = {
         }
         Returns: undefined
       }
+      get_analytics_summary: {
+        Args: {
+          p_landing_page_id: string
+          p_start: string
+          p_end: string
+        }
+        Returns: Json | null
+      }
+      get_views_by_day: {
+        Args: {
+          p_landing_page_id: string
+          p_start: string
+          p_end: string
+        }
+        Returns: {
+          day: string
+          views: number
+          unique_views: number
+        }[]
+      }
+      get_top_links: {
+        Args: {
+          p_landing_page_id: string
+          p_start: string
+          p_end: string
+        }
+        Returns: {
+          link_id: string
+          title: string
+          clicks: number
+        }[]
+      }
+      get_hourly_distribution: {
+        Args: {
+          p_landing_page_id: string
+          p_start: string
+          p_end: string
+        }
+        Returns: {
+          hour: number
+          views: number
+        }[]
+      }
+      get_geo_distribution: {
+        Args: {
+          p_landing_page_id: string
+          p_start: string
+          p_end: string
+        }
+        Returns: {
+          region: string
+          views: number
+          unique_views: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

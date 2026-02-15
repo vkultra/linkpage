@@ -11,6 +11,7 @@ const RegisterPage = lazy(() => import('../pages/RegisterPage').then((m) => ({ d
 const DashboardPage = lazy(() => import('../pages/DashboardPage').then((m) => ({ default: m.DashboardPage })))
 const PageEditorPage = lazy(() => import('../pages/PageEditorPage').then((m) => ({ default: m.PageEditorPage })))
 const ProfileSettingsPage = lazy(() => import('../pages/ProfileSettingsPage').then((m) => ({ default: m.ProfileSettingsPage })))
+const StatsPage = lazy(() => import('../pages/StatsPage').then((m) => ({ default: m.StatsPage })))
 const PublicLandingPage = lazy(() => import('../pages/PublicLandingPage').then((m) => ({ default: m.PublicLandingPage })))
 const NotFound = lazy(() => import('../components/public/NotFound').then((m) => ({ default: m.NotFound })))
 
@@ -37,6 +38,7 @@ export function AppRouter() {
             <Route element={<DashboardThemeProvider><DashboardLayout /></DashboardThemeProvider>}>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/dashboard/pages/:pageId" element={<PageEditorPage />} />
+              <Route path="/dashboard/stats" element={<StatsPage />} />
               <Route path="/dashboard/settings" element={<ProfileSettingsPage />} />
             </Route>
           </Route>

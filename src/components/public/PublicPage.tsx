@@ -12,9 +12,10 @@ interface PublicPageProps {
   profileName: string
   profileAvatar?: string | null
   customization?: PageCustomization
+  onLinkClick?: (linkId: string) => void
 }
 
-export function PublicPage({ page, links, theme, profileName, profileAvatar, customization }: PublicPageProps) {
+export function PublicPage({ page, links, theme, profileName, profileAvatar, customization, onLinkClick }: PublicPageProps) {
   const activeLinks = links.filter((l) => l.is_active)
   const avatarSrc = page.avatar_url ?? profileAvatar
   const hasBio = !!page.bio
@@ -99,6 +100,7 @@ export function PublicPage({ page, links, theme, profileName, profileAvatar, cus
                   title={link.title}
                   url={link.url}
                   resolved={resolved}
+                  onClick={onLinkClick ? () => onLinkClick(link.id) : undefined}
                 />
               </div>
             )

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { getPublicPage } from '../services/landing-page.service'
@@ -8,6 +8,7 @@ import { NotFound } from '../components/public/NotFound'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { loadFont } from '../lib/fonts'
 import { useFbTracking } from '../hooks/useFbTracking'
+import { trackAnalyticsEvent } from '../lib/analytics-tracking'
 import type { LandingPage, Link, PageCustomization, FontFamily } from '../types'
 
 function parseCustomization(raw: unknown): PageCustomization {
@@ -25,6 +26,19 @@ export function PublicLandingPage() {
   const [notFound, setNotFound] = useState(false)
 
   useFbTracking(page?.id)
+
+  // Analytics tracking — pageview on mount
+  const analyticsTrackedRef = useRef(false)
+  useEffect(() => {
+    if (!page?.id || analyticsTrackedRef.current) return
+    analyticsTrackedRef.current = true
+    trackAnalyticsEvent({ landingPageId: page.id, eventType: 'pageview' })
+  }, [page?.id])
+
+  const handleLinkClick = useCallback((linkId: string) => {
+    if (!page?.id) return
+    trackAnalyticsEvent({ landingPageId: page.id, eventType: 'click', linkId })
+  }, [page?.id])
 
   const fetchData = useCallback(async () => {
     if (!username) return
@@ -106,6 +120,7 @@ export function PublicLandingPage() {
       profileName={page.profiles.full_name || page.profiles.username}
       profileAvatar={page.profiles.avatar_url}
       customization={customization}
+      onLinkClick={handleLinkClick}
     />
     </>
   )

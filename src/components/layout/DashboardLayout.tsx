@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { useDashboardTheme } from '../../hooks/useDashboardTheme'
 import { signOut } from '../../services/auth.service'
-import { LinkIcon, LayoutDashboard, Settings, LogOut, Sun, Moon } from 'lucide-react'
+import { LinkIcon, LayoutDashboard, BarChart3, Settings, LogOut, Sun, Moon } from 'lucide-react'
 import { Avatar } from '../ui/Avatar'
 import toast from 'react-hot-toast'
 
@@ -51,6 +51,19 @@ export function DashboardLayout() {
             >
               <LayoutDashboard className="h-4 w-4" />
               <span className="hidden sm:inline">Páginas</span>
+            </NavLink>
+            <NavLink
+              to="/dashboard/stats"
+              className={({ isActive }) =>
+                `flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium ${
+                  isActive
+                    ? 'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-slate-50'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700'
+                }`
+              }
+            >
+              <BarChart3 className="h-4 w-4" />
+              <span className="hidden sm:inline">Estatísticas</span>
             </NavLink>
             <NavLink
               to="/dashboard/settings"

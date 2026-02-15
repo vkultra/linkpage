@@ -69,6 +69,38 @@ export interface PageCustomization {
 
 export type LinkType = 'link' | 'header'
 
+// --- Analytics types ---
+
+export interface AnalyticsSummary {
+  total_views: number
+  unique_visitors: number
+  total_clicks: number
+  unique_clickers: number
+}
+
+export interface ViewByDay {
+  day: string
+  views: number
+  unique_views: number
+}
+
+export interface TopLink {
+  link_id: string
+  title: string
+  clicks: number
+}
+
+export interface HourlyData {
+  hour: number
+  views: number
+}
+
+export interface GeoData {
+  region: string
+  views: number
+  unique_views: number
+}
+
 // --- Resolved styles (runtime) ---
 
 export interface StyleProp {
