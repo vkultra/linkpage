@@ -31,6 +31,24 @@ export const linkSchema = z.object({
   url: z.string().url('URL inválida'),
 })
 
+export const headerSchema = z.object({
+  title: z.string().min(1, 'Título é obrigatório').max(100, 'Título muito longo'),
+})
+
+const hexColorSchema = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'Cor inválida')
+
+export const customColorsSchema = z.object({
+  background: hexColorSchema.optional(),
+  text: hexColorSchema.optional(),
+  cardBackground: hexColorSchema.optional(),
+  cardText: hexColorSchema.optional(),
+})
+
+export const socialLinkSchema = z.object({
+  platform: z.string().min(1),
+  url: z.string().url('URL inválida'),
+})
+
 export const fileUploadSchema = z.object({
   file: z.instanceof(File).refine(
     (file) => file.size <= 2 * 1024 * 1024,

@@ -6,7 +6,15 @@ import { getTheme } from '../themes'
 import { PublicPage } from '../components/public/PublicPage'
 import { NotFound } from '../components/public/NotFound'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
-import type { LandingPage, Link } from '../types'
+import { loadFont } from '../lib/fonts'
+import type { LandingPage, Link, PageCustomization, FontFamily } from '../types'
+
+function parseCustomization(raw: unknown): PageCustomization {
+  if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+    return raw as PageCustomization
+  }
+  return {}
+}
 
 export function PublicLandingPage() {
   const { username, slug } = useParams<{ username: string; slug?: string }>()
@@ -22,6 +30,12 @@ export function PublicLandingPage() {
       setPage(pageData)
       const linksData = await getLinks(pageData.id)
       setLinks(linksData)
+
+      // Load custom font
+      const cust = parseCustomization(pageData.customization)
+      if (cust.fontFamily && cust.fontFamily !== 'inter') {
+        loadFont(cust.fontFamily as FontFamily)
+      }
     } catch {
       setNotFound(true)
     } finally {
@@ -42,6 +56,7 @@ export function PublicLandingPage() {
   }
 
   const theme = getTheme(page.theme)
+  const customization = parseCustomization(page.customization)
 
   return (
     <PublicPage
@@ -50,6 +65,7 @@ export function PublicLandingPage() {
       theme={theme}
       profileName={page.profiles.full_name || page.profiles.username}
       profileAvatar={page.profiles.avatar_url}
+      customization={customization}
     />
   )
 }
