@@ -1,4 +1,4 @@
-import type { ThemeConfig, PageCustomization, ResolvedStyles, ButtonStyle } from '../types'
+import type { ThemeConfig, PageCustomization, ResolvedStyles, ButtonStyle, ThemeName } from '../types'
 
 function getButtonRadius(style?: ButtonStyle): string {
   switch (style) {
@@ -8,6 +8,18 @@ function getButtonRadius(style?: ButtonStyle): string {
     case 'rounded':
     default: return 'rounded-xl'
   }
+}
+
+const profileCardClasses: Record<ThemeName, string> = {
+  light: 'bg-white/70 backdrop-blur-sm shadow-lg border border-gray-200/50 rounded-2xl',
+  dark: 'bg-gray-900/50 backdrop-blur-sm shadow-lg border border-gray-700/30 rounded-2xl',
+  gradient: 'bg-white/10 backdrop-blur-md shadow-lg border border-white/20 rounded-2xl',
+  neon: 'bg-gray-900/40 backdrop-blur-sm shadow-lg border border-cyan-500/20 rounded-2xl',
+  glassmorphism: 'bg-white/[0.08] backdrop-blur-lg shadow-lg border border-white/15 rounded-2xl',
+}
+
+function getProfileCardClass(name: ThemeName): string {
+  return profileCardClasses[name] ?? profileCardClasses.light
 }
 
 export function resolveStyles(
@@ -42,6 +54,10 @@ export function resolveStyles(
     })(),
 
     cardHover: isOutline ? 'hover:opacity-80' : theme.cardHover,
+
+    profileCard: colors?.cardBackground
+      ? { style: { backgroundColor: colors.cardBackground + '1A', backdropFilter: 'blur(12px)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.12)' } }
+      : { className: getProfileCardClass(theme.name as ThemeName) },
 
     avatarBorder: theme.avatarBorder,
 

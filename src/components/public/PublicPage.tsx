@@ -24,45 +24,61 @@ export function PublicPage({ page, links, theme, profileName, profileAvatar, cus
 
   return (
     <div
-      className={cn('flex min-h-screen flex-col items-center px-4 py-12', resolved.background.className)}
+      className={cn('flex min-h-screen flex-col items-center px-5 pt-16 pb-12 sm:px-6', resolved.background.className)}
       style={{ ...resolved.background.style, fontFamily: resolved.fontFamily }}
     >
       <div className="w-full max-w-md">
-        {/* Avatar + Info */}
-        <div className="mb-8 flex flex-col items-center text-center">
+        {/* Avatar — floats above profile card */}
+        <div className="public-avatar-enter relative z-10 flex justify-center">
           <Avatar
             src={avatarSrc}
             alt={profileName}
             size="xl"
-            className={cn('mb-4 ring-4', resolved.avatarBorder)}
+            className={cn('shadow-lg ring-4', resolved.avatarBorder)}
           />
+        </div>
+
+        {/* Profile Card — overlaps avatar by 56px */}
+        <div
+          className={cn(
+            'public-profile-enter -mt-14 px-6 pt-[4.5rem] pb-6 text-center',
+            resolved.profileCard.className
+          )}
+          style={resolved.profileCard.style}
+        >
           <h1
             className={cn('text-xl font-bold', resolved.text.className)}
             style={resolved.text.style}
           >
             {page.title || profileName}
           </h1>
+
           {sanitizedBio && (
             <p
-              className={cn('mt-2 max-w-xs text-sm', resolved.textSecondary.className)}
+              className={cn('mt-2 text-sm line-clamp-3', resolved.textSecondary.className)}
               style={resolved.textSecondary.style}
               dangerouslySetInnerHTML={{ __html: sanitizedBio }}
             />
           )}
+
+          {/* Social Icons — inside profile card */}
+          {socialLinks.length > 0 && (
+            <div className="mt-4 [&>div]:mb-0">
+              <SocialIconsBar links={socialLinks} textStyle={resolved.text} />
+            </div>
+          )}
         </div>
 
-        {/* Social Icons */}
-        {socialLinks.length > 0 && (
-          <SocialIconsBar links={socialLinks} textStyle={resolved.text} />
-        )}
-
         {/* Links */}
-        <div className="space-y-3">
-          {activeLinks.map((link) => {
-            // Header type
+        <div className="mt-6 space-y-3">
+          {activeLinks.map((link, index) => {
             if (link.type === 'header') {
               return (
-                <div key={link.id} className="pt-4 pb-1">
+                <div
+                  key={link.id}
+                  className="public-link-enter pt-4 pb-1"
+                  style={{ animationDelay: `${0.3 + index * 0.06}s` }}
+                >
                   <p
                     className={cn('text-center text-sm font-semibold uppercase tracking-wider', resolved.textSecondary.className)}
                     style={resolved.textSecondary.style}
@@ -74,18 +90,26 @@ export function PublicPage({ page, links, theme, profileName, profileAvatar, cus
             }
 
             return (
-              <PublicLinkItem
+              <div
                 key={link.id}
-                title={link.title}
-                url={link.url}
-                resolved={resolved}
-              />
+                className="public-link-enter"
+                style={{ animationDelay: `${0.3 + index * 0.06}s` }}
+              >
+                <PublicLinkItem
+                  title={link.title}
+                  url={link.url}
+                  resolved={resolved}
+                />
+              </div>
             )
           })}
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-center">
+        <div
+          className="public-link-enter mt-12 text-center"
+          style={{ animationDelay: `${0.3 + activeLinks.length * 0.06 + 0.1}s` }}
+        >
           <p
             className={cn('text-xs', resolved.textSecondary.className)}
             style={resolved.textSecondary.style}

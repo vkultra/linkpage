@@ -32,53 +32,64 @@ export function PagePreview({ title, bio, theme: themeName, avatarUrl, links, cu
 
         {/* Screen */}
         <div
-          className={cn('h-[500px] overflow-y-auto px-4 py-6', resolved.background.className)}
+          className={cn('h-[500px] overflow-y-auto px-3 pt-8 pb-4', resolved.background.className)}
           style={{ ...resolved.background.style, fontFamily: resolved.fontFamily }}
         >
-          <div className="flex flex-col items-center text-center">
+          {/* Avatar — floats above profile card */}
+          <div className="relative z-10 flex justify-center">
             <Avatar
               src={avatarUrl}
               size="lg"
-              className={cn('mb-3 ring-2', resolved.avatarBorder)}
+              className={cn('shadow-md ring-2', resolved.avatarBorder)}
             />
+          </div>
+
+          {/* Profile Card — overlaps avatar */}
+          <div
+            className={cn(
+              '-mt-10 px-3 pt-14 pb-4 text-center',
+              resolved.profileCard.className
+            )}
+            style={resolved.profileCard.style}
+          >
             <h2
               className={cn('text-sm font-bold', resolved.text.className)}
               style={resolved.text.style}
             >
-              {title || 'Título da página'}
+              {title || 'Titulo da pagina'}
             </h2>
             {bio && (
               <p
-                className={cn('mt-1 text-xs', resolved.textSecondary.className)}
+                className={cn('mt-1 text-xs line-clamp-2', resolved.textSecondary.className)}
                 style={resolved.textSecondary.style}
               >
                 {bio.slice(0, 100)}
               </p>
             )}
+
+            {/* Social icons mini — inside card */}
+            {socialLinks.length > 0 && (
+              <div className="mt-2.5 flex flex-wrap justify-center gap-2">
+                {socialLinks.map((link) => {
+                  const platform = getPlatform(link.platform)
+                  if (!platform) return null
+                  return (
+                    <div
+                      key={link.platform}
+                      className="flex h-7 w-7 items-center justify-center rounded-full"
+                      style={{ backgroundColor: resolved.text.style?.color ? resolved.text.style.color + '15' : undefined }}
+                    >
+                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill={resolved.text.style?.color ?? 'currentColor'}>
+                        <path d={platform.icon} />
+                      </svg>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
 
-          {/* Social icons mini */}
-          {socialLinks.length > 0 && (
-            <div className="mt-3 flex flex-wrap justify-center gap-2">
-              {socialLinks.map((link) => {
-                const platform = getPlatform(link.platform)
-                if (!platform) return null
-                return (
-                  <div
-                    key={link.platform}
-                    className="flex h-7 w-7 items-center justify-center rounded-full"
-                    style={{ backgroundColor: resolved.text.style?.color ? resolved.text.style.color + '15' : undefined }}
-                  >
-                    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill={resolved.text.style?.color ?? 'currentColor'}>
-                      <path d={platform.icon} />
-                    </svg>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-
-          <div className="mt-4 space-y-2">
+          <div className="mt-3 space-y-2">
             {activeLinks.length === 0 ? (
               <div
                 className={cn('rounded-lg px-3 py-3 text-center text-xs', resolved.card.className, resolved.textSecondary.className)}
@@ -105,7 +116,7 @@ export function PagePreview({ title, bio, theme: themeName, avatarUrl, links, cu
                   <div
                     key={link.id}
                     className={cn(
-                      'flex items-center gap-2 px-3 py-2.5 transition-all',
+                      'flex items-center gap-2 px-3 py-2.5 shadow-sm transition-all',
                       resolved.buttonRadius,
                       resolved.card.className
                     )}
@@ -123,7 +134,7 @@ export function PagePreview({ title, bio, theme: themeName, avatarUrl, links, cu
                       {link.title}
                     </span>
                     <ExternalLink
-                      className="h-3 w-3 flex-shrink-0"
+                      className="h-3 w-3 flex-shrink-0 opacity-50"
                       style={resolved.textSecondary.style}
                     />
                   </div>

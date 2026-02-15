@@ -81,6 +81,7 @@ export interface ResolvedStyles {
   textSecondary: StyleProp
   card: StyleProp
   cardHover: string
+  profileCard: StyleProp
   avatarBorder: string
   buttonRadius: string
   fontFamily?: string
