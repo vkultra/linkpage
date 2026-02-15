@@ -11,5 +11,5 @@ export const glassmorphismTheme: ThemeConfig = {
   border: 'border-white/20',
   accent: 'bg-white/25 backdrop-blur-sm text-white border border-white/30',
   avatarBorder: 'ring-white/30',
-  themeColor: '#6366f1',
+  themeColor: '#60a5fa',
 }

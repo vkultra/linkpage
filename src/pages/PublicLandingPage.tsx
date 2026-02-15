@@ -63,14 +63,15 @@ export function PublicLandingPage() {
     ? parseCustomization(page.customization).customColors?.background || getTheme(page.theme).themeColor
     : null
 
-  // Update theme-color directly via DOM for Safari compatibility
+  // Safari: set theme-color meta + body background so browser chrome matches the page
   useEffect(() => {
     if (!themeColor) return
     const meta = document.querySelector('meta[name="theme-color"]')
     if (meta) meta.setAttribute('content', themeColor)
+    document.body.style.backgroundColor = themeColor
     return () => {
-      const meta = document.querySelector('meta[name="theme-color"]')
       if (meta) meta.setAttribute('content', '#ffffff')
+      document.body.style.backgroundColor = ''
     }
   }, [themeColor])
 
@@ -97,7 +98,6 @@ export function PublicLandingPage() {
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="profile" />
         {page.avatar_url && <meta property="og:image" content={page.avatar_url} />}
-        <meta name="theme-color" content={customization.customColors?.background || theme.themeColor} />
       </Helmet>
       <PublicPage
       page={page}
