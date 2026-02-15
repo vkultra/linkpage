@@ -234,14 +234,19 @@ export function ThemeBrutalist() {
               className="rounded-2xl overflow-hidden cursor-pointer select-none"
               onClick={advance}
               style={{
-                boxShadow:
-                  '0 50px 100px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06)',
+                boxShadow: profile.dayMode
+                  ? '0 50px 100px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.06)'
+                  : '0 50px 100px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06)',
               }}
             >
               {/* Browser chrome bar */}
               <div
                 className="flex items-center gap-2 px-4 py-3"
-                style={{ backgroundColor: 'rgba(12,5,22,0.97)' }}
+                style={{
+                  backgroundColor: profile.dayMode
+                    ? 'rgba(245,245,245,0.98)'
+                    : 'rgba(12,5,22,0.97)',
+                }}
               >
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#ff5f57' }} />
@@ -251,8 +256,12 @@ export function ThemeBrutalist() {
                 <div
                   className="flex-1 mx-4 px-4 py-1 rounded-md text-[11px] text-center truncate"
                   style={{
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    color: 'rgba(255,255,255,0.22)',
+                    backgroundColor: profile.dayMode
+                      ? 'rgba(0,0,0,0.05)'
+                      : 'rgba(255,255,255,0.05)',
+                    color: profile.dayMode
+                      ? 'rgba(0,0,0,0.35)'
+                      : 'rgba(255,255,255,0.22)',
                   }}
                 >
                   rapli.io/{profile.username}
@@ -262,7 +271,10 @@ export function ThemeBrutalist() {
               {/* Embedded mini landing page */}
               <div
                 className="relative overflow-hidden"
-                style={{ minHeight: '380px', backgroundColor: '#080312' }}
+                style={{
+                  minHeight: '380px',
+                  backgroundColor: profile.dayMode ? '#fafafa' : '#080312',
+                }}
               >
                 {/* Background + pattern + orbs — all fade together */}
                 <div
@@ -321,13 +333,16 @@ export function ThemeBrutalist() {
                     {profile.emoji}
                   </div>
 
-                  <p className="mt-3 sm:mt-4 text-base sm:text-lg font-bold text-white">
+                  <p
+                    className="mt-3 sm:mt-4 text-base sm:text-lg font-bold"
+                    style={{ color: profile.dayMode ? 'rgba(0,0,0,0.85)' : '#fff' }}
+                  >
                     @{profile.username}
                   </p>
 
                   <p
                     className="mt-1.5 text-xs sm:text-sm text-center max-w-[280px] leading-relaxed"
-                    style={{ color: 'rgba(255,255,255,0.4)' }}
+                    style={{ color: profile.dayMode ? 'rgba(0,0,0,0.45)' : 'rgba(255,255,255,0.4)' }}
                   >
                     {profile.bio}
                   </p>
@@ -339,9 +354,15 @@ export function ThemeBrutalist() {
                         key={link.label}
                         className="flex items-center gap-3 rounded-xl py-3 px-4 text-sm font-medium"
                         style={{
-                          backgroundColor: `${profile.accent}0a`,
-                          color: 'rgba(255,255,255,0.65)',
-                          border: `1px solid ${profile.accent}15`,
+                          backgroundColor: profile.dayMode
+                            ? `${profile.accent}10`
+                            : `${profile.accent}0a`,
+                          color: profile.dayMode
+                            ? 'rgba(0,0,0,0.7)'
+                            : 'rgba(255,255,255,0.65)',
+                          border: profile.dayMode
+                            ? `1px solid ${profile.accent}22`
+                            : `1px solid ${profile.accent}15`,
                         }}
                       >
                         <LinkFavicon domain={link.domain} className="w-4 h-4" />
@@ -363,7 +384,9 @@ export function ThemeBrutalist() {
                         backgroundColor:
                           i === activeIndex
                             ? profile.accent
-                            : 'rgba(255,255,255,0.2)',
+                            : profile.dayMode
+                              ? 'rgba(0,0,0,0.15)'
+                              : 'rgba(255,255,255,0.2)',
                       }}
                       aria-label={`Ver perfil ${i + 1}`}
                     />
@@ -609,6 +632,7 @@ interface DemoProfile {
   accent: string
   pattern: string
   orbs: DemoOrb[]
+  dayMode?: boolean
 }
 
 const DEMO_PROFILES: DemoProfile[] = [
@@ -643,14 +667,15 @@ const DEMO_PROFILES: DemoProfile[] = [
       { label: 'Minha Loja', domain: 'shopify.com' },
     ],
     avatarGradient: 'linear-gradient(135deg, #f43f5e, #fb923c)',
-    bgFrom: '#2a0a14',
-    bgTo: '#1a0510',
-    accent: '#fb7185',
+    bgFrom: '#fff5f5',
+    bgTo: '#fce7f3',
+    accent: '#e11d48',
     pattern: 'circles',
+    dayMode: true,
     orbs: [
-      { x: '80%', y: '25%', size: 70, blur: 35, opacity: 0.18 },
-      { x: '20%', y: '75%', size: 50, blur: 30, opacity: 0.12 },
-      { x: '60%', y: '50%', size: 40, blur: 25, opacity: 0.08 },
+      { x: '80%', y: '25%', size: 70, blur: 35, opacity: 0.1 },
+      { x: '20%', y: '75%', size: 50, blur: 30, opacity: 0.08 },
+      { x: '60%', y: '50%', size: 40, blur: 25, opacity: 0.06 },
     ],
   },
   {
@@ -684,13 +709,14 @@ const DEMO_PROFILES: DemoProfile[] = [
       { label: 'Pinterest', domain: 'pinterest.com' },
     ],
     avatarGradient: 'linear-gradient(135deg, #14b8a6, #10b981)',
-    bgFrom: '#0a2420',
-    bgTo: '#051510',
-    accent: '#2dd4bf',
+    bgFrom: '#f0fdfa',
+    bgTo: '#ecfdf5',
+    accent: '#0d9488',
     pattern: 'crosshair',
+    dayMode: true,
     orbs: [
-      { x: '75%', y: '20%', size: 65, blur: 35, opacity: 0.14 },
-      { x: '25%', y: '80%', size: 45, blur: 25, opacity: 0.1 },
+      { x: '75%', y: '20%', size: 65, blur: 35, opacity: 0.1 },
+      { x: '25%', y: '80%', size: 45, blur: 25, opacity: 0.07 },
     ],
   },
   {
@@ -704,14 +730,15 @@ const DEMO_PROFILES: DemoProfile[] = [
       { label: 'WhatsApp', domain: 'whatsapp.com' },
     ],
     avatarGradient: 'linear-gradient(135deg, #84cc16, #22c55e)',
-    bgFrom: '#0a2010',
-    bgTo: '#051208',
-    accent: '#a3e635',
+    bgFrom: '#f7fee7',
+    bgTo: '#ecfccb',
+    accent: '#65a30d',
     pattern: 'chevrons',
+    dayMode: true,
     orbs: [
-      { x: '20%', y: '25%', size: 75, blur: 40, opacity: 0.13 },
-      { x: '80%', y: '60%', size: 55, blur: 30, opacity: 0.16 },
-      { x: '50%', y: '85%', size: 40, blur: 25, opacity: 0.08 },
+      { x: '20%', y: '25%', size: 75, blur: 40, opacity: 0.09 },
+      { x: '80%', y: '60%', size: 55, blur: 30, opacity: 0.1 },
+      { x: '50%', y: '85%', size: 40, blur: 25, opacity: 0.06 },
     ],
   },
   {
@@ -725,13 +752,14 @@ const DEMO_PROFILES: DemoProfile[] = [
       { label: 'Newsletter', domain: 'substack.com' },
     ],
     avatarGradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
-    bgFrom: '#2a1a08',
-    bgTo: '#1a0f04',
-    accent: '#fbbf24',
+    bgFrom: '#fffbeb',
+    bgTo: '#fef3c7',
+    accent: '#d97706',
     pattern: 'dashes',
+    dayMode: true,
     orbs: [
-      { x: '85%', y: '30%', size: 60, blur: 30, opacity: 0.15 },
-      { x: '15%', y: '65%', size: 70, blur: 35, opacity: 0.12 },
+      { x: '85%', y: '30%', size: 60, blur: 30, opacity: 0.1 },
+      { x: '15%', y: '65%', size: 70, blur: 35, opacity: 0.08 },
     ],
   },
   {
