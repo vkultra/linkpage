@@ -3,6 +3,7 @@ import type { LandingPage } from '../../types'
 import { Card } from '../ui/Card'
 import { ExternalLink, Pencil, Trash2, Star } from 'lucide-react'
 import { Button } from '../ui/Button'
+import { getPublicPageUrl, getPublicPageDisplayUrl } from '../../lib/urls'
 
 interface PageCardProps {
   page: LandingPage
@@ -13,9 +14,7 @@ interface PageCardProps {
 
 export function PageCard({ page, username, onDelete, onSetDefault }: PageCardProps) {
   const navigate = useNavigate()
-  const publicUrl = page.slug
-    ? `/${username}/${page.slug}`
-    : `/${username}`
+  const publicUrl = getPublicPageUrl(username, page.slug || undefined)
 
   return (
     <Card className="flex items-center justify-between gap-4">
@@ -32,7 +31,7 @@ export function PageCard({ page, username, onDelete, onSetDefault }: PageCardPro
           )}
         </div>
         <p className="mt-0.5 truncate text-sm text-gray-500 dark:text-slate-400">
-          {page.slug ? `/${username}/${page.slug}` : `/${username}`}
+          {getPublicPageDisplayUrl(username, page.slug || undefined)}
         </p>
       </div>
 

@@ -18,8 +18,10 @@ function parseCustomization(raw: unknown): PageCustomization {
   return {}
 }
 
-export function PublicLandingPage() {
-  const { username, slug } = useParams<{ username: string; slug?: string }>()
+export function PublicLandingPage({ username: usernameProp }: { username?: string }) {
+  const params = useParams<{ username?: string; slug?: string }>()
+  const username = usernameProp || params.username
+  const slug = params.slug
   const [page, setPage] = useState<(LandingPage & { profiles: { username: string; full_name: string; avatar_url: string | null } }) | null>(null)
   const [links, setLinks] = useState<Link[]>([])
   const [loading, setLoading] = useState(true)

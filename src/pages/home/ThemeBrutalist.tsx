@@ -264,7 +264,7 @@ export function ThemeBrutalist() {
                       : 'rgba(255,255,255,0.22)',
                   }}
                 >
-                  rapli.io/{profile.username}
+                  {profile.username}.rapli.io
                 </div>
               </div>
 

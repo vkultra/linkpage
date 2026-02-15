@@ -4,6 +4,7 @@ import { ProtectedRoute } from '../components/auth/ProtectedRoute'
 import { DashboardLayout } from '../components/layout/DashboardLayout'
 import { DashboardThemeProvider } from '../contexts/DashboardThemeContext'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
+import { getSubdomainUsername } from '../lib/subdomain'
 
 const HomePage = lazy(() => import('../pages/HomePage').then((m) => ({ default: m.HomePage })))
 const LoginPage = lazy(() => import('../pages/LoginPage').then((m) => ({ default: m.LoginPage })))
@@ -24,6 +25,24 @@ function PageFallback() {
 }
 
 export function AppRouter() {
+  const subdomainUser = getSubdomainUsername()
+
+  // Subdomínio (ex: vkultra.rapli.io) → apenas rotas públicas
+  if (subdomainUser) {
+    return (
+      <BrowserRouter>
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
+            <Route path="/" element={<PublicLandingPage username={subdomainUser} />} />
+            <Route path="/:slug" element={<PublicLandingPage username={subdomainUser} />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    )
+  }
+
+  // Domínio principal (rapli.io) ou localhost → app completo
   return (
     <BrowserRouter>
       <Suspense fallback={<PageFallback />}>
@@ -43,7 +62,7 @@ export function AppRouter() {
             </Route>
           </Route>
 
-          {/* Landing pages públicas - DEVE ficar por último */}
+          {/* Fallback: landing pages por path (dev local + compatibilidade) */}
           <Route path="/:username" element={<PublicLandingPage />} />
           <Route path="/:username/:slug" element={<PublicLandingPage />} />
 
