@@ -110,14 +110,14 @@ export function PageEditorPage() {
           <ArrowLeft className="h-4 w-4" />
           Voltar
         </Button>
-        <h1 className="text-xl font-bold text-gray-900">Editar Página</h1>
+        <h1 className="text-xl font-bold text-gray-900 dark:text-slate-50">Editar Página</h1>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
         {/* Coluna esquerda - Configurações + Links */}
         <div className="space-y-6">
           <Card>
-            <h2 className="mb-4 text-base font-semibold text-gray-900">Informações</h2>
+            <h2 className="mb-4 text-base font-semibold text-gray-900 dark:text-slate-50">Informações</h2>
             <div className="space-y-4">
               <Input
                 id="page-title"
@@ -151,7 +151,7 @@ export function PageEditorPage() {
           {/* Links */}
           <Card>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-base font-semibold text-gray-900">Links</h2>
+              <h2 className="text-base font-semibold text-gray-900 dark:text-slate-50">Links</h2>
               <Button size="sm" onClick={() => setShowLinkForm(true)}>
                 <Plus className="h-4 w-4" />
                 Adicionar
@@ -159,7 +159,7 @@ export function PageEditorPage() {
             </div>
 
             {showLinkForm && (
-              <div className="mb-4 rounded-lg border border-gray-100 bg-gray-50 p-4">
+              <div className="mb-4 rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-slate-700/50 dark:bg-slate-700/30">
                 <LinkForm
                   onSubmit={handleAddLink}
                   onCancel={() => setShowLinkForm(false)}
@@ -186,7 +186,7 @@ export function PageEditorPage() {
         {/* Coluna direita - Preview */}
         <div className="hidden lg:block">
           <div className="sticky top-24">
-            <h2 className="mb-4 text-center text-sm font-medium text-gray-500">Preview</h2>
+            <h2 className="mb-4 text-center text-sm font-medium text-gray-500 dark:text-slate-400">Preview</h2>
             <PagePreview
               title={title}
               bio={bio}

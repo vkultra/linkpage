@@ -41,7 +41,7 @@ export function LoginPage() {
             className="text-2xl font-bold text-white"
             style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
           >
-            Entrar no LinkPage
+            Entrar no rapli.io
           </h1>
           <p className="mt-1 text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
             Gerencie suas landing pages

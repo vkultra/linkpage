@@ -17,8 +17,8 @@ export function ThemePreview({ themeName, selected = false, onClick }: ThemePrev
       className={cn(
         'flex flex-col items-center gap-1.5 rounded-lg p-2 transition-all',
         selected
-          ? 'ring-2 ring-gray-900 ring-offset-2'
-          : 'hover:bg-gray-100'
+          ? 'ring-2 ring-gray-900 ring-offset-2 dark:ring-slate-400 dark:ring-offset-slate-900'
+          : 'hover:bg-gray-100 dark:hover:bg-slate-700'
       )}
     >
       <div
@@ -31,7 +31,7 @@ export function ThemePreview({ themeName, selected = false, onClick }: ThemePrev
         <div className={cn('h-1.5 w-12 rounded-full', theme.card)} />
         <div className={cn('h-1.5 w-10 rounded-full', theme.card)} />
       </div>
-      <span className="text-xs font-medium text-gray-700">{theme.label}</span>
+      <span className="text-xs font-medium text-gray-700 dark:text-slate-300">{theme.label}</span>
     </button>
   )
 }

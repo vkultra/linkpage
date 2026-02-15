@@ -11,7 +11,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="space-y-1">
         {label && (
-          <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+          <label htmlFor={id} className="block text-sm font-medium text-gray-700 dark:text-slate-300">
             {label}
           </label>
         )}
@@ -20,11 +20,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           className={cn(
             'block w-full rounded-lg border px-3 py-2 text-sm transition-colors',
-            'placeholder:text-gray-400',
-            'focus:outline-none focus:ring-2 focus:ring-offset-1',
+            'placeholder:text-gray-400 dark:placeholder:text-slate-500',
+            'focus:outline-none focus:ring-2 focus:ring-offset-1 dark:focus:ring-offset-slate-900',
+            'dark:bg-slate-900 dark:text-slate-100 dark:border-slate-600',
             error
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-              : 'border-gray-300 focus:border-gray-900 focus:ring-gray-900',
+              : 'border-gray-300 focus:border-gray-900 focus:ring-gray-900 dark:focus:ring-slate-400',
             className
           )}
           {...props}

@@ -20,17 +20,17 @@ export function PageCard({ page, username, onDelete, onSetDefault }: PageCardPro
     <Card className="flex items-center justify-between gap-4">
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <h3 className="truncate text-base font-semibold text-gray-900">
+          <h3 className="truncate text-base font-semibold text-gray-900 dark:text-slate-50">
             {page.title || 'Sem título'}
           </h3>
           {page.is_default && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-400/15 dark:text-amber-400">
               <Star className="h-3 w-3" />
               Principal
             </span>
           )}
         </div>
-        <p className="mt-0.5 truncate text-sm text-gray-500">
+        <p className="mt-0.5 truncate text-sm text-gray-500 dark:text-slate-400">
           {page.slug ? `/${username}/${page.slug}` : `/${username}`}
         </p>
       </div>
@@ -61,7 +61,7 @@ export function PageCard({ page, username, onDelete, onSetDefault }: PageCardPro
           size="sm"
           onClick={() => onDelete(page.id)}
           title="Excluir"
-          className="text-red-600 hover:bg-red-50 hover:text-red-700"
+          className="text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-300"
         >
           <Trash2 className="h-4 w-4" />
         </Button>

@@ -15,7 +15,7 @@ export function LoadingSpinner({ className, size = 'md', fullScreen = false }: L
   }
 
   const spinner = (
-    <Loader2 className={cn('animate-spin text-gray-400', sizes[size], className)} />
+    <Loader2 className={cn('animate-spin text-gray-400 dark:text-slate-400', sizes[size], className)} />
   )
 
   if (fullScreen) {

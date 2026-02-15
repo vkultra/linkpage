@@ -119,7 +119,7 @@ export function ThemeBrutalist() {
                 className="text-lg font-bold tracking-tight text-white"
                 style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
               >
-                LinkPage
+                rapli.io
               </span>
             </div>
 
@@ -253,7 +253,7 @@ export function ThemeBrutalist() {
                     color: 'rgba(255,255,255,0.22)',
                   }}
                 >
-                  linkpage.app/{profile.username}
+                  rapli.io/{profile.username}
                 </div>
               </div>
 
@@ -885,7 +885,7 @@ const ADVANTAGES = [
   {
     icon: <Globe className="w-5 h-5" style={{ color: '#818cf8' }} />,
     title: 'Link Público Memorável',
-    desc: 'Compartilhe linkpage.app/seunome — fácil de lembrar.',
+    desc: 'Compartilhe rapli.io/seunome — fácil de lembrar.',
     bg: 'linear-gradient(145deg, #100c24 0%, #1e184a 50%, #100c24 100%)',
     iconBg: 'rgba(129,140,248,0.10)',
     accent: '#818cf8',

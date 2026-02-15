@@ -54,7 +54,7 @@ export function PublicPage({ page, links, theme, profileName, profileAvatar }: P
         {/* Footer */}
         <div className="mt-12 text-center">
           <p className={cn('text-xs', theme.textSecondary)}>
-            Feito com LinkPage
+            Feito com rapli.io
           </p>
         </div>
       </div>

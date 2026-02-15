@@ -26,7 +26,7 @@ export function Avatar({ src, alt = 'Avatar', size = 'md', className }: AvatarPr
   return (
     <div
       className={cn(
-        'relative flex-shrink-0 overflow-hidden rounded-full bg-gray-100',
+        'relative flex-shrink-0 overflow-hidden rounded-full bg-gray-100 dark:bg-slate-800',
         sizes[size],
         className
       )}
@@ -39,7 +39,7 @@ export function Avatar({ src, alt = 'Avatar', size = 'md', className }: AvatarPr
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center">
-          <User className={cn('text-gray-400', iconSizes[size])} />
+          <User className={cn('text-gray-400 dark:text-slate-500', iconSizes[size])} />
         </div>
       )}
     </div>

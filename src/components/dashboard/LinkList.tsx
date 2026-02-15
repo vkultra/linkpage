@@ -47,8 +47,8 @@ export function LinkList({ links, onUpdate, onDelete, onReorder }: LinkListProps
 
   if (links.length === 0) {
     return (
-      <div className="rounded-lg border-2 border-dashed border-gray-300 px-4 py-8 text-center">
-        <p className="text-sm text-gray-500">Nenhum link adicionado ainda.</p>
+      <div className="rounded-lg border-2 border-dashed border-gray-300 px-4 py-8 text-center dark:border-slate-600">
+        <p className="text-sm text-gray-500 dark:text-slate-400">Nenhum link adicionado ainda.</p>
       </div>
     )
   }

@@ -23,7 +23,7 @@ export function AvatarUpload({ src, uploading = false, onUpload }: AvatarUploadP
         <Avatar src={src} size="lg" />
         <button
           onClick={() => inputRef.current?.click()}
-          className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-gray-900 text-white shadow-sm hover:bg-gray-800"
+          className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-gray-900 text-white shadow-sm hover:bg-gray-800 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200"
           aria-label="Alterar avatar"
         >
           <Camera className="h-4 w-4" />
@@ -38,7 +38,7 @@ export function AvatarUpload({ src, uploading = false, onUpload }: AvatarUploadP
         >
           Alterar foto
         </Button>
-        <p className="mt-1 text-xs text-gray-500">JPG, PNG ou WebP. Max 2MB.</p>
+        <p className="mt-1 text-xs text-gray-500 dark:text-slate-400">JPG, PNG ou WebP. Max 2MB.</p>
       </div>
       <input
         ref={inputRef}

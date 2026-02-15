@@ -35,13 +35,13 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
-        className="fixed inset-0 bg-black/50 transition-opacity"
+        className="fixed inset-0 bg-black/50 dark:bg-black/70 transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
       <div
         className={cn(
-          'relative z-10 w-full max-w-md rounded-xl bg-white p-6 shadow-xl',
+          'relative z-10 w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-slate-800',
           'animate-in fade-in zoom-in-95',
           className
         )}
@@ -51,10 +51,10 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
       >
         {title && (
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-50">{title}</h2>
             <button
               onClick={onClose}
-              className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-300"
               aria-label="Fechar"
             >
               <X className="h-5 w-5" />

@@ -9,7 +9,14 @@
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Zilla+Slab:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet" />
-    <title>LinkPage</title>
+    <title>rapli.io</title>
+    <script>
+      if(location.pathname.startsWith('/dashboard')){
+        var t=localStorage.getItem('rapli-dashboard-theme');
+        if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))
+          document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

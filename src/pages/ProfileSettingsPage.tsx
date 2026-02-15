@@ -54,13 +54,13 @@ export function ProfileSettingsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Configurações do Perfil</h1>
-        <p className="mt-1 text-sm text-gray-500">Gerencie suas informações pessoais</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-50">Configurações do Perfil</h1>
+        <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">Gerencie suas informações pessoais</p>
       </div>
 
       <div className="max-w-lg space-y-6">
         <Card>
-          <h2 className="mb-4 text-base font-semibold text-gray-900">Avatar</h2>
+          <h2 className="mb-4 text-base font-semibold text-gray-900 dark:text-slate-50">Avatar</h2>
           <AvatarUpload
             src={profile.avatar_url}
             uploading={uploading}
@@ -69,14 +69,14 @@ export function ProfileSettingsPage() {
         </Card>
 
         <Card>
-          <h2 className="mb-4 text-base font-semibold text-gray-900">Informações</h2>
+          <h2 className="mb-4 text-base font-semibold text-gray-900 dark:text-slate-50">Informações</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               id="username"
               label="Username"
               value={profile.username}
               disabled
-              className="bg-gray-50"
+              className="bg-gray-50 dark:bg-slate-900"
             />
             <Input
               id="fullName"

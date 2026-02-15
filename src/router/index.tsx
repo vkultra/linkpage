@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from '../components/auth/ProtectedRoute'
 import { DashboardLayout } from '../components/layout/DashboardLayout'
+import { DashboardThemeProvider } from '../contexts/DashboardThemeContext'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
 import { RegisterPage } from '../pages/RegisterPage'
@@ -21,7 +22,7 @@ export function AppRouter() {
 
         {/* Rotas protegidas */}
         <Route element={<ProtectedRoute />}>
-          <Route element={<DashboardLayout />}>
+          <Route element={<DashboardThemeProvider><DashboardLayout /></DashboardThemeProvider>}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/dashboard/pages/:pageId" element={<PageEditorPage />} />
             <Route path="/dashboard/settings" element={<ProfileSettingsPage />} />

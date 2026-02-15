@@ -17,7 +17,7 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
 
   if (editing) {
     return (
-      <div className="rounded-lg border border-gray-200 bg-white p-4">
+      <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-slate-700/50 dark:bg-slate-800">
         <LinkForm
           initialValues={{ title: link.title, url: link.url }}
           onSubmit={async (data) => {
@@ -31,9 +31,9 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 py-3">
+    <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 py-3 dark:border-slate-700/50 dark:bg-slate-800">
       <button
-        className="cursor-grab touch-none text-gray-400 hover:text-gray-600"
+        className="cursor-grab touch-none text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-300"
         aria-label="Arrastar para reordenar"
         {...dragHandleProps}
       >
@@ -50,8 +50,8 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
       )}
 
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-gray-900">{link.title}</p>
-        <p className="truncate text-xs text-gray-500">{link.url}</p>
+        <p className="truncate text-sm font-medium text-gray-900 dark:text-slate-100">{link.title}</p>
+        <p className="truncate text-xs text-gray-500 dark:text-slate-400">{link.url}</p>
       </div>
 
       <div className="flex items-center gap-1">
@@ -62,7 +62,7 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
           title={link.is_active ? 'Desativar' : 'Ativar'}
         >
           {link.is_active ? (
-            <Eye className="h-4 w-4 text-green-600" />
+            <Eye className="h-4 w-4 text-green-600 dark:text-green-400" />
           ) : (
             <EyeOff className="h-4 w-4 text-gray-400" />
           )}
@@ -80,7 +80,7 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
           size="sm"
           onClick={() => onDelete(link.id)}
           title="Excluir"
-          className="text-red-600 hover:bg-red-50 hover:text-red-700"
+          className="text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-300"
         >
           <Trash2 className="h-4 w-4" />
         </Button>
