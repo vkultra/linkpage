@@ -12,11 +12,12 @@ export async function getLandingPages(userId: string): Promise<LandingPage[]> {
   return data
 }
 
-export async function getLandingPage(id: string): Promise<LandingPage> {
+export async function getLandingPage(id: string, userId: string): Promise<LandingPage> {
   const { data, error } = await supabase
     .from('landing_pages')
     .select('*')
     .eq('id', id)
+    .eq('user_id', userId)
     .single()
   if (error) throw error
   return data

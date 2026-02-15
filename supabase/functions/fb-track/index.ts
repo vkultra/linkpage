@@ -30,6 +30,15 @@ Deno.serve(async (req) => {
       )
     }
 
+    // Validate UUID format
+    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!UUID_RE.test(body.landing_page_id)) {
+      return new Response(
+        JSON.stringify({ ok: false, error: 'Invalid landing_page_id' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
     // Admin client — bypasses RLS to read access_token
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,

@@ -1,12 +1,13 @@
 import { supabase } from '../lib/supabase'
 import type { Link, LinkType } from '../types'
 
-export async function getLinks(landingPageId: string): Promise<Link[]> {
-  const { data, error } = await supabase
+export async function getLinks(landingPageId: string, userId?: string): Promise<Link[]> {
+  let query = supabase
     .from('links')
     .select('*')
     .eq('landing_page_id', landingPageId)
-    .order('position', { ascending: true })
+  if (userId) query = query.eq('user_id', userId)
+  const { data, error } = await query.order('position', { ascending: true })
   if (error) throw error
   return data
 }

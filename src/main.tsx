@@ -5,12 +5,13 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
 import { AppRouter } from './router'
+import { env } from './config/env'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/bricolage-grotesque'
 import './index.css'
 
 Sentry.init({
-  dsn: 'https://90657c4c2d8efe8ea6fcc4975db7e187@o4510796893126656.ingest.us.sentry.io/4510887582433280',
+  dsn: env.sentryDsn,
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration(),
@@ -18,7 +19,7 @@ Sentry.init({
   tracesSampleRate: 0.1,
   replaysSessionSampleRate: 0,
   replaysOnErrorSampleRate: 1.0,
-  enabled: import.meta.env.PROD,
+  enabled: import.meta.env.PROD && !!env.sentryDsn,
 })
 
 createRoot(document.getElementById('root')!).render(

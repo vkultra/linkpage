@@ -69,9 +69,9 @@ export function PageEditorPage() {
   )
 
   const fetchPage = useCallback(async () => {
-    if (!pageId) return
+    if (!pageId || !user) return
     try {
-      const data = await getLandingPage(pageId)
+      const data = await getLandingPage(pageId, user.id)
       setPage(data)
       setTitle(data.title)
       setSlug(data.slug)
@@ -93,7 +93,7 @@ export function PageEditorPage() {
     } finally {
       setLoading(false)
     }
-  }, [pageId, navigate])
+  }, [pageId, user, navigate])
 
   useEffect(() => {
     fetchPage()

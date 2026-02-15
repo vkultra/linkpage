@@ -228,7 +228,7 @@ describe('fileUploadSchema', () => {
 describe('facebookPixelSchema', () => {
   const valid = {
     pixel_id: '123456789',
-    access_token: 'EAAxxxxxxxx',
+    access_token: 'EAAxxxxxxxxxxxxxxxx_yyy',
     events: ['PageView'],
     is_active: true,
   }
@@ -247,6 +247,18 @@ describe('facebookPixelSchema', () => {
 
   it('rejeita access_token vazio', () => {
     expect(facebookPixelSchema.safeParse({ ...valid, access_token: '' }).success).toBe(false)
+  })
+
+  it('rejeita access_token muito curto', () => {
+    expect(facebookPixelSchema.safeParse({ ...valid, access_token: 'short' }).success).toBe(false)
+  })
+
+  it('rejeita access_token com caracteres inválidos', () => {
+    expect(facebookPixelSchema.safeParse({ ...valid, access_token: 'token with spaces!@#$' }).success).toBe(false)
+  })
+
+  it('aceita access_token com underscores e pipes', () => {
+    expect(facebookPixelSchema.safeParse({ ...valid, access_token: 'EAABsbCS1iZAg_TOKEN|value123' }).success).toBe(true)
   })
 
   it('rejeita events vazio', () => {

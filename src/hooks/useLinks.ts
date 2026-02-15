@@ -26,7 +26,7 @@ export function useLinks(landingPageId: string | undefined) {
     setError(null)
     setLoading(true)
     try {
-      const data = await getLinks(landingPageId)
+      const data = await getLinks(landingPageId, user?.id)
       if (mountedRef.current) setLinks(data)
     } catch (err) {
       if (mountedRef.current) {
@@ -37,7 +37,7 @@ export function useLinks(landingPageId: string | undefined) {
     } finally {
       if (mountedRef.current) setLoading(false)
     }
-  }, [landingPageId])
+  }, [landingPageId, user?.id])
 
   useEffect(() => {
     fetchLinks()

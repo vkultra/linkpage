@@ -18,7 +18,8 @@ interface GeoResult {
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 async function hashIp(ip: string): Promise<string> {
-  const salt = Deno.env.get('ANALYTICS_IP_SALT') || 'rapli-analytics-salt'
+  const salt = Deno.env.get('ANALYTICS_IP_SALT')
+  if (!salt) throw new Error('ANALYTICS_IP_SALT is required')
   const data = new TextEncoder().encode(ip + salt)
   const hash = await crypto.subtle.digest('SHA-256', data)
   return Array.from(new Uint8Array(hash))
@@ -140,6 +141,23 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify({ ok: true, tracked: false }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         })
+      }
+
+      // Anti-spam: dedup clicks within 2s window per ip_hash + link_id
+      if (ipHash) {
+        const { data: recentClick } = await supabase
+          .from('link_clicks')
+          .select('id')
+          .eq('link_id', body.link_id)
+          .eq('ip_hash', ipHash)
+          .gte('clicked_at', new Date(Date.now() - 2000).toISOString())
+          .limit(1)
+
+        if (recentClick && recentClick.length > 0) {
+          return new Response(JSON.stringify({ ok: true, tracked: false, reason: 'dedup' }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          })
+        }
       }
 
       await supabase.from('link_clicks').insert({

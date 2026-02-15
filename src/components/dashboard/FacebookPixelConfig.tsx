@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useFacebookPixel } from '../../hooks/useFacebookPixel'
-import { facebookPixelSchema } from '../../lib/validators'
+import { facebookPixelSchema, facebookPixelUpdateSchema } from '../../lib/validators'
 import { FACEBOOK_EVENTS } from '../../types'
 import { Card } from '../ui/Card'
 import { Input } from '../ui/Input'
@@ -27,12 +27,12 @@ export function FacebookPixelConfig({ pageId }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [confirmRemove, setConfirmRemove] = useState(false)
 
-  const hasExistingToken = !!pixel?.access_token && !tokenEdited
+  const hasExistingToken = !!pixel && !tokenEdited
 
   useEffect(() => {
     if (pixel) {
       setPixelId(pixel.pixel_id)
-      setAccessToken(pixel.access_token)
+      setAccessToken('')
       setTokenEdited(false)
       setTestEventCode(pixel.test_event_code || '')
       setEvents(pixel.events)
@@ -51,33 +51,63 @@ export function FacebookPixelConfig({ pageId }: Props) {
 
   async function handleSave() {
     setErrors({})
-    const tokenToSave = hasExistingToken ? pixel!.access_token : accessToken
-    const result = facebookPixelSchema.safeParse({
-      pixel_id: pixelId,
-      access_token: tokenToSave,
-      test_event_code: testEventCode || undefined,
-      events,
-      is_active: isActive,
-    })
+    const shouldKeepToken = !!pixel && !tokenEdited
 
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {}
-      for (const issue of result.error.issues) {
-        const key = String(issue.path[0])
-        if (!fieldErrors[key]) fieldErrors[key] = issue.message
+    if (shouldKeepToken) {
+      const result = facebookPixelUpdateSchema.safeParse({
+        pixel_id: pixelId,
+        test_event_code: testEventCode || undefined,
+        events,
+        is_active: isActive,
+      })
+
+      if (!result.success) {
+        const fieldErrors: Record<string, string> = {}
+        for (const issue of result.error.issues) {
+          const key = String(issue.path[0])
+          if (!fieldErrors[key]) fieldErrors[key] = issue.message
+        }
+        setErrors(fieldErrors)
+        return
       }
-      setErrors(fieldErrors)
-      return
-    }
 
-    setSaving(true)
-    try {
-      await save(result.data)
-      toast.success('Facebook Pixel salvo!')
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Erro ao salvar pixel')
-    } finally {
-      setSaving(false)
+      setSaving(true)
+      try {
+        await save(result.data, true)
+        toast.success('Facebook Pixel salvo!')
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Erro ao salvar pixel')
+      } finally {
+        setSaving(false)
+      }
+    } else {
+      const result = facebookPixelSchema.safeParse({
+        pixel_id: pixelId,
+        access_token: accessToken,
+        test_event_code: testEventCode || undefined,
+        events,
+        is_active: isActive,
+      })
+
+      if (!result.success) {
+        const fieldErrors: Record<string, string> = {}
+        for (const issue of result.error.issues) {
+          const key = String(issue.path[0])
+          if (!fieldErrors[key]) fieldErrors[key] = issue.message
+        }
+        setErrors(fieldErrors)
+        return
+      }
+
+      setSaving(true)
+      try {
+        await save(result.data, false)
+        toast.success('Facebook Pixel salvo!')
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Erro ao salvar pixel')
+      } finally {
+        setSaving(false)
+      }
     }
   }
 
@@ -153,7 +183,7 @@ export function FacebookPixelConfig({ pageId }: Props) {
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-300 focus:border-gray-900 focus:ring-gray-900 dark:focus:ring-slate-400'
                 }`}
-                value={hasExistingToken ? `••••••••${accessToken.slice(-4)}` : accessToken}
+                value={hasExistingToken ? '••••••••••••' : accessToken}
                 onChange={(e) => { setAccessToken(e.target.value); setTokenEdited(true) }}
                 onFocus={() => { if (hasExistingToken) { setAccessToken(''); setTokenEdited(true) } }}
                 placeholder={hasExistingToken ? 'Token salvo — clique para editar' : ''}

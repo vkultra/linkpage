@@ -4,6 +4,7 @@ export type Profile = Database['public']['Tables']['profiles']['Row']
 export type LandingPage = Database['public']['Tables']['landing_pages']['Row']
 export type Link = Database['public']['Tables']['links']['Row']
 export type FacebookPixel = Database['public']['Tables']['facebook_pixels']['Row']
+export type FacebookPixelSafe = Omit<FacebookPixel, 'access_token'>
 
 export type FacebookEventName =
   | 'PageView'
