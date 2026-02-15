@@ -11,4 +11,5 @@ export const neonTheme: ThemeConfig = {
   border: 'border-cyan-500/50',
   accent: 'bg-cyan-500 text-gray-950',
   avatarBorder: 'ring-cyan-500/50',
+  themeColor: '#030712',
 }

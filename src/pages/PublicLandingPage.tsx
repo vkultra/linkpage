@@ -81,6 +81,7 @@ export function PublicLandingPage() {
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="profile" />
         {page.avatar_url && <meta property="og:image" content={page.avatar_url} />}
+        <meta name="theme-color" content={customization.customColors?.background || theme.themeColor} />
       </Helmet>
       <PublicPage
       page={page}

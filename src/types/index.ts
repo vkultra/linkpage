@@ -39,6 +39,7 @@ export interface ThemeConfig {
   border: string
   accent: string
   avatarBorder: string
+  themeColor: string
 }
 
 // --- Customization types ---

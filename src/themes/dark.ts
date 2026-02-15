@@ -11,4 +11,5 @@ export const darkTheme: ThemeConfig = {
   border: 'border-gray-800',
   accent: 'bg-white text-gray-900',
   avatarBorder: 'ring-gray-900',
+  themeColor: '#030712',
 }

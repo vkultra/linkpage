@@ -11,4 +11,5 @@ export const lightTheme: ThemeConfig = {
   border: 'border-gray-200',
   accent: 'bg-gray-900 text-white',
   avatarBorder: 'ring-white',
+  themeColor: '#f9fafb',
 }

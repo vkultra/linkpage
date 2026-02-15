@@ -11,4 +11,5 @@ export const gradientTheme: ThemeConfig = {
   border: 'border-white/30',
   accent: 'bg-white text-purple-700',
   avatarBorder: 'ring-white/50',
+  themeColor: '#9333ea',
 }
