@@ -7,6 +7,7 @@ import { PublicPage } from '../components/public/PublicPage'
 import { NotFound } from '../components/public/NotFound'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { loadFont } from '../lib/fonts'
+import { useFbTracking } from '../hooks/useFbTracking'
 import type { LandingPage, Link, PageCustomization, FontFamily } from '../types'
 
 function parseCustomization(raw: unknown): PageCustomization {
@@ -22,6 +23,8 @@ export function PublicLandingPage() {
   const [links, setLinks] = useState<Link[]>([])
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
+
+  useFbTracking(page?.id)
 
   const fetchData = useCallback(async () => {
     if (!username) return
