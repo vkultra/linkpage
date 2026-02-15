@@ -6,15 +6,34 @@ import { DashboardThemeProvider } from '../contexts/DashboardThemeContext'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { getSubdomainUsername } from '../lib/subdomain'
 
-const HomePage = lazy(() => import('../pages/HomePage').then((m) => ({ default: m.HomePage })))
-const LoginPage = lazy(() => import('../pages/LoginPage').then((m) => ({ default: m.LoginPage })))
-const RegisterPage = lazy(() => import('../pages/RegisterPage').then((m) => ({ default: m.RegisterPage })))
-const DashboardPage = lazy(() => import('../pages/DashboardPage').then((m) => ({ default: m.DashboardPage })))
-const PageEditorPage = lazy(() => import('../pages/PageEditorPage').then((m) => ({ default: m.PageEditorPage })))
-const ProfileSettingsPage = lazy(() => import('../pages/ProfileSettingsPage').then((m) => ({ default: m.ProfileSettingsPage })))
-const StatsPage = lazy(() => import('../pages/StatsPage').then((m) => ({ default: m.StatsPage })))
-const PublicLandingPage = lazy(() => import('../pages/PublicLandingPage').then((m) => ({ default: m.PublicLandingPage })))
-const NotFound = lazy(() => import('../components/public/NotFound').then((m) => ({ default: m.NotFound })))
+// Retry dynamic import with page reload on chunk load failure (stale deploy)
+function lazyRetry<T extends Record<string, unknown>>(
+  factory: () => Promise<T>,
+): Promise<T> {
+  return factory()
+    .then((module) => {
+      sessionStorage.removeItem('chunk_retry')
+      return module
+    })
+    .catch((err: unknown) => {
+      const alreadyRetried = sessionStorage.getItem('chunk_retry')
+      if (!alreadyRetried) {
+        sessionStorage.setItem('chunk_retry', '1')
+        window.location.reload()
+      }
+      throw err
+    })
+}
+
+const HomePage = lazy(() => lazyRetry(() => import('../pages/HomePage')).then((m) => ({ default: m.HomePage })))
+const LoginPage = lazy(() => lazyRetry(() => import('../pages/LoginPage')).then((m) => ({ default: m.LoginPage })))
+const RegisterPage = lazy(() => lazyRetry(() => import('../pages/RegisterPage')).then((m) => ({ default: m.RegisterPage })))
+const DashboardPage = lazy(() => lazyRetry(() => import('../pages/DashboardPage')).then((m) => ({ default: m.DashboardPage })))
+const PageEditorPage = lazy(() => lazyRetry(() => import('../pages/PageEditorPage')).then((m) => ({ default: m.PageEditorPage })))
+const ProfileSettingsPage = lazy(() => lazyRetry(() => import('../pages/ProfileSettingsPage')).then((m) => ({ default: m.ProfileSettingsPage })))
+const StatsPage = lazy(() => lazyRetry(() => import('../pages/StatsPage')).then((m) => ({ default: m.StatsPage })))
+const PublicLandingPage = lazy(() => lazyRetry(() => import('../pages/PublicLandingPage')).then((m) => ({ default: m.PublicLandingPage })))
+const NotFound = lazy(() => lazyRetry(() => import('../components/public/NotFound')).then((m) => ({ default: m.NotFound })))
 
 function PageFallback() {
   return (
