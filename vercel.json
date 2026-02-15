@@ -17,7 +17,7 @@
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'sha256-QJPY8rquNaLQYxzTZCr1W2Srvwyskecx2RCdhpES+YE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://*.supabase.co https://www.google.com https://*.gstatic.com data: blob:; connect-src 'self' https://*.supabase.co https://*.ingest.us.sentry.io; upgrade-insecure-requests; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+          "value": "default-src 'self'; script-src 'self' 'sha256-QJPY8rquNaLQYxzTZCr1W2Srvwyskecx2RCdhpES+YE='; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://*.supabase.co https://www.google.com https://*.gstatic.com data: blob:; connect-src 'self' https://*.supabase.co https://*.ingest.us.sentry.io; upgrade-insecure-requests; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
         },
         {
           "key": "Permissions-Policy",
