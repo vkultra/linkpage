@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getLandingPageBySlug } from '../services/landing-page.service'
-import { getLinks } from '../services/link.service'
+import { Helmet } from 'react-helmet-async'
+import { getPublicPage } from '../services/landing-page.service'
 import { getTheme } from '../themes'
 import { PublicPage } from '../components/public/PublicPage'
 import { NotFound } from '../components/public/NotFound'
@@ -28,10 +28,18 @@ export function PublicLandingPage() {
 
   const fetchData = useCallback(async () => {
     if (!username) return
+
+    // Validate username format before querying
+    const usernameRegex = /^[a-z0-9][a-z0-9-]{0,28}[a-z0-9]$/
+    if (!usernameRegex.test(username)) {
+      setNotFound(true)
+      setLoading(false)
+      return
+    }
+
     try {
-      const pageData = await getLandingPageBySlug(username, slug)
+      const { page: pageData, links: linksData } = await getPublicPage(username, slug)
       setPage(pageData)
-      const linksData = await getLinks(pageData.id)
       setLinks(linksData)
 
       // Load custom font
@@ -60,9 +68,21 @@ export function PublicLandingPage() {
 
   const theme = getTheme(page.theme)
   const customization = parseCustomization(page.customization)
+  const displayName = page.profiles.full_name || page.profiles.username
+  const pageTitle = page.title ? `${page.title} — ${displayName}` : displayName
+  const pageDescription = page.bio || `Confira os links de ${displayName}`
 
   return (
-    <PublicPage
+    <>
+      <Helmet>
+        <title>{pageTitle} | rapli.io</title>
+        <meta name="description" content={pageDescription} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:type" content="profile" />
+        {page.avatar_url && <meta property="og:image" content={page.avatar_url} />}
+      </Helmet>
+      <PublicPage
       page={page}
       links={links}
       theme={theme}
@@ -70,5 +90,6 @@ export function PublicLandingPage() {
       profileAvatar={page.profiles.avatar_url}
       customization={customization}
     />
+    </>
   )
 }

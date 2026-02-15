@@ -22,32 +22,37 @@ export async function getLandingPage(id: string): Promise<LandingPage> {
   return data
 }
 
+export interface PublicPageData {
+  page: LandingPage & { profiles: { username: string; full_name: string; avatar_url: string | null } }
+  links: import('../types').Link[]
+}
+
+export async function getPublicPage(
+  username: string,
+  slug?: string
+): Promise<PublicPageData> {
+  const { data, error } = await supabase.rpc('get_public_page', {
+    p_username: username,
+    p_slug: slug || null,
+  })
+  if (error) throw error
+  if (!data) throw new Error('Not found')
+
+  const result = data as { profile: Record<string, unknown>; page: Record<string, unknown>; links: Record<string, unknown>[] }
+
+  return {
+    page: { ...result.page, profiles: result.profile } as PublicPageData['page'],
+    links: result.links as PublicPageData['links'],
+  }
+}
+
+/** @deprecated Use getPublicPage instead — kept for backwards compatibility */
 export async function getLandingPageBySlug(
   username: string,
   slug?: string
 ): Promise<LandingPage & { profiles: { username: string; full_name: string; avatar_url: string | null } }> {
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('id, username, full_name, avatar_url')
-    .eq('username', username)
-    .single()
-  if (profileError) throw profileError
-
-  let query = supabase
-    .from('landing_pages')
-    .select('*')
-    .eq('user_id', profile.id)
-
-  if (slug) {
-    query = query.eq('slug', slug)
-  } else {
-    query = query.eq('is_default', true)
-  }
-
-  const { data, error } = await query.single()
-  if (error) throw error
-
-  return { ...data, profiles: profile }
+  const { page } = await getPublicPage(username, slug)
+  return page
 }
 
 export async function createLandingPage(
@@ -71,22 +76,25 @@ export async function createLandingPage(
 
 export async function updateLandingPage(
   id: string,
+  userId: string,
   updates: Partial<Pick<LandingPage, 'title' | 'slug' | 'bio' | 'theme' | 'avatar_url' | 'is_default' | 'customization'>>
 ): Promise<LandingPage> {
   const { data, error } = await supabase
     .from('landing_pages')
     .update(updates)
     .eq('id', id)
+    .eq('user_id', userId)
     .select()
     .single()
   if (error) throw error
   return data
 }
 
-export async function deleteLandingPage(id: string): Promise<void> {
+export async function deleteLandingPage(id: string, userId: string): Promise<void> {
   const { error } = await supabase
     .from('landing_pages')
     .delete()
     .eq('id', id)
+    .eq('user_id', userId)
   if (error) throw error
 }

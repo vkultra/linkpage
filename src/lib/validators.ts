@@ -7,7 +7,7 @@ export const registerSchema = z.object({
     .max(30, 'Username deve ter no máximo 30 caracteres')
     .regex(/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/, 'Username deve conter apenas letras minúsculas, números e hífens'),
   email: z.string().email('Email inválido'),
-  password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'),
+  password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres'),
   fullName: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome muito longo'),
 })
 
@@ -23,12 +23,17 @@ export const landingPageSchema = z.object({
     .max(50, 'Slug muito longo')
     .regex(/^[a-z0-9-]{0,50}$/, 'Slug deve conter apenas letras minúsculas, números e hífens'),
   bio: z.string().max(500, 'Bio muito longa').optional().default(''),
-  theme: z.string().default('light'),
+  theme: z.enum(['light', 'dark', 'gradient', 'neon', 'glassmorphism']).default('light'),
 })
+
+const safeUrlSchema = z.string().url('URL inválida').refine(
+  (url) => /^https?:\/\//i.test(url),
+  'URL deve começar com http:// ou https://'
+)
 
 export const linkSchema = z.object({
   title: z.string().min(1, 'Título é obrigatório').max(100, 'Título muito longo'),
-  url: z.string().url('URL inválida'),
+  url: safeUrlSchema,
 })
 
 export const headerSchema = z.object({
@@ -46,7 +51,7 @@ export const customColorsSchema = z.object({
 
 export const socialLinkSchema = z.object({
   platform: z.string().min(1),
-  url: z.string().url('URL inválida'),
+  url: safeUrlSchema,
 })
 
 export const fileUploadSchema = z.object({

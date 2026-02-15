@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { corsHeaders } from '../_shared/cors.ts'
+import { getCorsHeaders } from '../_shared/cors.ts'
 
 interface TrackRequest {
   landing_page_id: string
@@ -12,6 +12,9 @@ interface TrackRequest {
 }
 
 Deno.serve(async (req) => {
+  const origin = req.headers.get('origin')
+  const corsHeaders = getCorsHeaders(origin)
+
   // CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -96,13 +99,18 @@ Deno.serve(async (req) => {
 
     const fbResult = await fbResponse.json()
 
+    if (!fbResponse.ok) {
+      console.error('Facebook CAPI error:', JSON.stringify(fbResult))
+    }
+
     return new Response(
-      JSON.stringify({ ok: true, tracked: true, fb: fbResult }),
+      JSON.stringify({ ok: true, tracked: true }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (err) {
+    console.error('fb-track error:', err)
     return new Response(
-      JSON.stringify({ ok: false, error: String(err) }),
+      JSON.stringify({ ok: false, error: 'Internal server error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }

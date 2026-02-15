@@ -18,6 +18,7 @@ export function FacebookPixelConfig({ pageId }: Props) {
   const [expanded, setExpanded] = useState(false)
   const [pixelId, setPixelId] = useState('')
   const [accessToken, setAccessToken] = useState('')
+  const [tokenEdited, setTokenEdited] = useState(false)
   const [testEventCode, setTestEventCode] = useState('')
   const [events, setEvents] = useState<string[]>(['PageView'])
   const [isActive, setIsActive] = useState(true)
@@ -26,10 +27,13 @@ export function FacebookPixelConfig({ pageId }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [confirmRemove, setConfirmRemove] = useState(false)
 
+  const hasExistingToken = !!pixel?.access_token && !tokenEdited
+
   useEffect(() => {
     if (pixel) {
       setPixelId(pixel.pixel_id)
       setAccessToken(pixel.access_token)
+      setTokenEdited(false)
       setTestEventCode(pixel.test_event_code || '')
       setEvents(pixel.events)
       setIsActive(pixel.is_active)
@@ -47,9 +51,10 @@ export function FacebookPixelConfig({ pageId }: Props) {
 
   async function handleSave() {
     setErrors({})
+    const tokenToSave = hasExistingToken ? pixel!.access_token : accessToken
     const result = facebookPixelSchema.safeParse({
       pixel_id: pixelId,
-      access_token: accessToken,
+      access_token: tokenToSave,
       test_event_code: testEventCode || undefined,
       events,
       is_active: isActive,
@@ -142,14 +147,16 @@ export function FacebookPixelConfig({ pageId }: Props) {
             <div className="relative">
               <input
                 id="fb-access-token"
-                type={showToken ? 'text' : 'password'}
+                type={showToken && !hasExistingToken ? 'text' : 'password'}
                 className={`block w-full rounded-lg border px-3 py-2 pr-10 text-sm transition-colors placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-offset-1 dark:focus:ring-offset-slate-900 dark:bg-slate-900 dark:text-slate-100 dark:border-slate-600 ${
                   errors.access_token
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-300 focus:border-gray-900 focus:ring-gray-900 dark:focus:ring-slate-400'
                 }`}
-                value={accessToken}
-                onChange={(e) => setAccessToken(e.target.value)}
+                value={hasExistingToken ? `••••••••${accessToken.slice(-4)}` : accessToken}
+                onChange={(e) => { setAccessToken(e.target.value); setTokenEdited(true) }}
+                onFocus={() => { if (hasExistingToken) { setAccessToken(''); setTokenEdited(true) } }}
+                placeholder={hasExistingToken ? 'Token salvo — clique para editar' : ''}
               />
               <button
                 type="button"

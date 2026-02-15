@@ -8,38 +8,11 @@ import { Card } from '../components/ui/Card'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { Save } from 'lucide-react'
 import toast from 'react-hot-toast'
+import type { Profile } from '../types'
 
 export function ProfileSettingsPage() {
   const { profile, loading, update } = useProfile()
   const { upload, uploading } = useFileUpload()
-  const [fullName, setFullName] = useState('')
-  const [initialized, setInitialized] = useState(false)
-
-  if (profile && !initialized) {
-    setFullName(profile.full_name)
-    setInitialized(true)
-  }
-
-  async function handleAvatarUpload(file: File) {
-    if (!profile) return
-    try {
-      const url = await upload(file, 'profile')
-      await update({ avatar_url: url })
-      toast.success('Avatar atualizado!')
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Erro no upload')
-    }
-  }
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    try {
-      await update({ full_name: fullName })
-      toast.success('Perfil atualizado!')
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Erro ao salvar')
-    }
-  }
 
   if (loading) {
     return (
@@ -50,6 +23,54 @@ export function ProfileSettingsPage() {
   }
 
   if (!profile) return null
+
+  return (
+    <ProfileSettingsForm
+      profile={profile}
+      uploading={uploading}
+      onUpdate={update}
+      onUpload={upload}
+    />
+  )
+}
+
+function ProfileSettingsForm({
+  profile,
+  uploading,
+  onUpdate,
+  onUpload,
+}: {
+  profile: Profile
+  uploading: boolean
+  onUpdate: (updates: Partial<Pick<Profile, 'full_name' | 'avatar_url'>>) => Promise<Profile>
+  onUpload: (file: File, fileId: string) => Promise<string>
+}) {
+  const [fullName, setFullName] = useState(profile.full_name)
+
+  async function handleAvatarUpload(file: File) {
+    try {
+      const url = await onUpload(file, 'profile')
+      await onUpdate({ avatar_url: url })
+      toast.success('Avatar atualizado!')
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erro no upload')
+    }
+  }
+
+  const [saving, setSaving] = useState(false)
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    setSaving(true)
+    try {
+      await onUpdate({ full_name: fullName })
+      toast.success('Perfil atualizado!')
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao salvar')
+    } finally {
+      setSaving(false)
+    }
+  }
 
   return (
     <div>
@@ -85,7 +106,7 @@ export function ProfileSettingsPage() {
               onChange={(e) => setFullName(e.target.value)}
             />
             <div className="flex justify-end">
-              <Button type="submit">
+              <Button type="submit" loading={saving} disabled={saving}>
                 <Save className="h-4 w-4" />
                 Salvar
               </Button>

@@ -113,7 +113,7 @@ export function RegisterForm() {
         <input
           id="password"
           type="password"
-          placeholder="Mínimo 6 caracteres"
+          placeholder="Mínimo 8 caracteres"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="new-password"

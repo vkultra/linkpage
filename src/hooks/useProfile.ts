@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAuth } from './useAuth'
 import { getProfile, updateProfile } from '../services/profile.service'
 import type { Profile } from '../types'
@@ -7,16 +7,28 @@ export function useProfile() {
   const { user } = useAuth()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const mountedRef = useRef(true)
+
+  useEffect(() => {
+    mountedRef.current = true
+    return () => { mountedRef.current = false }
+  }, [])
 
   const fetchProfile = useCallback(async () => {
     if (!user) return
+    setError(null)
     try {
       const data = await getProfile(user.id)
-      setProfile(data)
+      if (mountedRef.current) setProfile(data)
     } catch (err) {
+      if (mountedRef.current) {
+        const message = err instanceof Error ? err.message : 'Erro ao carregar perfil'
+        setError(message)
+      }
       console.error('Error fetching profile:', err)
     } finally {
-      setLoading(false)
+      if (mountedRef.current) setLoading(false)
     }
   }, [user])
 
@@ -31,5 +43,5 @@ export function useProfile() {
     return data
   }
 
-  return { profile, loading, update, refetch: fetchProfile }
+  return { profile, loading, error, update, refetch: fetchProfile }
 }

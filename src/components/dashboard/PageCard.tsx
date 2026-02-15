@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import type { LandingPage } from '../../types'
 import { Card } from '../ui/Card'
 import { ExternalLink, Pencil, Trash2, Star } from 'lucide-react'
@@ -12,6 +12,7 @@ interface PageCardProps {
 }
 
 export function PageCard({ page, username, onDelete, onSetDefault }: PageCardProps) {
+  const navigate = useNavigate()
   const publicUrl = page.slug
     ? `/${username}/${page.slug}`
     : `/${username}`
@@ -46,16 +47,22 @@ export function PageCard({ page, username, onDelete, onSetDefault }: PageCardPro
             <Star className="h-4 w-4" />
           </Button>
         )}
-        <Link to={publicUrl} target="_blank">
-          <Button variant="ghost" size="sm" title="Visualizar">
-            <ExternalLink className="h-4 w-4" />
-          </Button>
-        </Link>
-        <Link to={`/dashboard/pages/${page.id}`}>
-          <Button variant="ghost" size="sm" title="Editar">
-            <Pencil className="h-4 w-4" />
-          </Button>
-        </Link>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => window.open(publicUrl, '_blank')}
+          title="Visualizar"
+        >
+          <ExternalLink className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate(`/dashboard/pages/${page.id}`)}
+          title="Editar"
+        >
+          <Pencil className="h-4 w-4" />
+        </Button>
         <Button
           variant="ghost"
           size="sm"

@@ -11,7 +11,7 @@ import type { LandingPageInput } from '../lib/validators'
 import toast from 'react-hot-toast'
 
 export function DashboardPage() {
-  const { pages, loading, create, remove, update } = useLandingPages()
+  const { pages, loading, create, remove, update, refetch } = useLandingPages()
   const { profile } = useProfile()
   const [showForm, setShowForm] = useState(false)
 
@@ -38,6 +38,7 @@ export function DashboardPage() {
   async function handleSetDefault(id: string) {
     try {
       await update(id, { is_default: true })
+      await refetch()
       toast.success('Página definida como principal')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao definir como principal')

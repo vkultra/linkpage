@@ -15,6 +15,7 @@ interface LinkItemProps {
 
 export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItemProps) {
   const [editing, setEditing] = useState(false)
+  const [toggling, setToggling] = useState(false)
   const isHeader = link.type === 'header'
 
   if (editing) {
@@ -69,14 +70,16 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
             size="sm"
             onClick={() => setEditing(true)}
             title="Editar"
+            aria-label="Editar cabeçalho"
           >
             <Pencil className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onDelete(link.id)}
+            onClick={() => { if (confirm('Tem certeza que deseja excluir este cabeçalho?')) onDelete(link.id) }}
             title="Excluir"
+            aria-label="Excluir cabeçalho"
             className="text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-300"
           >
             <Trash2 className="h-4 w-4" />
@@ -115,8 +118,17 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => onUpdate(link.id, { is_active: !link.is_active })}
+          disabled={toggling}
+          onClick={async () => {
+            setToggling(true)
+            try {
+              await onUpdate(link.id, { is_active: !link.is_active })
+            } finally {
+              setToggling(false)
+            }
+          }}
           title={link.is_active ? 'Desativar' : 'Ativar'}
+          aria-label={link.is_active ? 'Desativar link' : 'Ativar link'}
         >
           {link.is_active ? (
             <Eye className="h-4 w-4 text-green-600 dark:text-green-400" />
@@ -129,14 +141,16 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
           size="sm"
           onClick={() => setEditing(true)}
           title="Editar"
+          aria-label="Editar link"
         >
           <Pencil className="h-4 w-4" />
         </Button>
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => onDelete(link.id)}
+          onClick={() => { if (confirm('Tem certeza que deseja excluir este link?')) onDelete(link.id) }}
           title="Excluir"
+          aria-label="Excluir link"
           className="text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-300"
         >
           <Trash2 className="h-4 w-4" />

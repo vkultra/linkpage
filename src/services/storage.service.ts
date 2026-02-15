@@ -5,7 +5,12 @@ export async function uploadAvatar(
   fileId: string,
   file: File
 ): Promise<string> {
-  const ext = file.name.split('.').pop() ?? 'webp'
+  const mimeToExt: Record<string, string> = {
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+  }
+  const ext = mimeToExt[file.type] ?? 'webp'
   const path = `${userId}/${fileId}.${ext}`
 
   const { error } = await supabase.storage

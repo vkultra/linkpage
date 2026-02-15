@@ -37,8 +37,8 @@ export function useFacebookPixel(landingPageId: string | undefined) {
   }
 
   async function remove() {
-    if (!landingPageId) throw new Error('No landing page')
-    await deleteFacebookPixel(landingPageId)
+    if (!user || !landingPageId) throw new Error('Not authenticated')
+    await deleteFacebookPixel(landingPageId, user.id)
     setPixel(null)
   }
 

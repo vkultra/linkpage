@@ -15,6 +15,7 @@ export function AvatarUpload({ src, uploading = false, onUpload }: AvatarUploadP
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (file) onUpload(file)
+    e.target.value = ''
   }
 
   return (
@@ -46,6 +47,7 @@ export function AvatarUpload({ src, uploading = false, onUpload }: AvatarUploadP
         accept="image/jpeg,image/png,image/webp"
         onChange={handleChange}
         className="hidden"
+        aria-label="Selecionar arquivo de avatar"
       />
     </div>
   )

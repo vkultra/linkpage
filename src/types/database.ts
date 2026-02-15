@@ -207,7 +207,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_public_page: {
+        Args: {
+          p_username: string
+          p_slug?: string | null
+        }
+        Returns: Json | null
+      }
+      reorder_links: {
+        Args: {
+          p_link_ids: string[]
+          p_positions: number[]
+          p_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

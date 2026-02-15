@@ -1,6 +1,6 @@
 /**
  * Tema 3 — "Vivid"
- * Gradiente roxo animado, scroll-reveal "landing page builder", snap mobile
+ * Gradiente roxo animado, scroll-reveal "bio page builder", snap mobile
  *
  * Fontes: Bricolage Grotesque (títulos), Inter (corpo)
  * Cores: Gradiente roxo animado, botões claros (branco/cream)
@@ -11,12 +11,12 @@ import { Link } from 'react-router-dom'
 import {
   Sparkles,
   ArrowDown,
-  Palette,
-  GripVertical,
-  Layers,
-  Globe,
   LinkIcon,
   ArrowRight,
+  BadgeCheck,
+  Activity,
+  Infinity,
+  SlidersHorizontal,
 } from 'lucide-react'
 
 export function ThemeBrutalist() {
@@ -155,17 +155,17 @@ export function ThemeBrutalist() {
               }}
             >
               <Sparkles size={13} />
-              Plataforma de Landing Pages
+              Grátis pra sempre
             </div>
 
             {/* Title */}
             <h1
-              className="text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight text-white anim-fade-in-up"
+              className="text-[2rem] sm:text-5xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight text-white anim-fade-in-up"
               style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
             >
-              Crie Sua Landing Page
+              Todos os seus links.
               <br />
-              <span className="vivid-text-shimmer">Profissional</span> em Minutos
+              Uma <span className="vivid-text-shimmer">bio</span>. Zero custo.
             </h1>
 
             {/* Subtitle */}
@@ -173,14 +173,15 @@ export function ThemeBrutalist() {
               className="mt-6 text-base sm:text-lg max-w-xl mx-auto leading-relaxed anim-fade-in-up"
               style={{ color: 'rgba(255,255,255,0.5)', animationDelay: '0.15s' }}
             >
-              Tudo que você precisa para criar páginas incríveis, de{' '}
-              <span className="underline decoration-white/30 underline-offset-4">temas prontos</span> a{' '}
-              <span className="underline decoration-white/30 underline-offset-4">personalização</span> total.
+              Crie sua página de links personalizada em minutos.{' '}
+              <span className="underline decoration-white/30 underline-offset-4">Temas prontos</span>,{' '}
+              <span className="underline decoration-white/30 underline-offset-4">tracking Facebook</span> integrado
+              e links ilimitados.
             </p>
 
             {/* CTA buttons */}
             <div
-              className="mt-8 flex flex-row gap-3 justify-center anim-fade-in-up"
+              className="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center anim-fade-in-up"
               style={{ animationDelay: '0.25s' }}
             >
               <Link to="/register">
@@ -192,7 +193,7 @@ export function ThemeBrutalist() {
                     boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
                   }}
                 >
-                  Criar conta grátis
+                  Criar minha bio page grátis
                 </button>
               </Link>
               <Link to="/login">
@@ -204,7 +205,7 @@ export function ThemeBrutalist() {
                     backdropFilter: 'blur(4px)',
                   }}
                 >
-                  Entrar na plataforma
+                  Já tenho conta
                 </button>
               </Link>
             </div>
@@ -319,9 +320,9 @@ export function ThemeBrutalist() {
                     {profile.emoji}
                   </div>
 
-                  <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-bold text-white">
+                  <p className="mt-3 sm:mt-4 text-base sm:text-lg font-bold text-white">
                     @{profile.username}
-                  </h3>
+                  </p>
 
                   <p
                     className="mt-1.5 text-xs sm:text-sm text-center max-w-[280px] leading-relaxed"
@@ -427,14 +428,14 @@ export function ThemeBrutalist() {
                 className="text-3xl sm:text-4xl md:text-4xl font-extrabold text-white leading-tight tracking-tight"
                 style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
               >
-                Tudo para você{' '}
-                <span className="vivid-text-shimmer">brilhar</span> online
+                Tudo que sua{' '}
+                <span className="vivid-text-shimmer">bio page</span> precisa
               </h2>
               <p
                 className="mt-3 text-sm sm:text-base max-w-sm mx-auto leading-relaxed"
                 style={{ color: 'rgba(255,255,255,0.35)' }}
               >
-                Ferramentas profissionais para criar páginas que impressionam.
+                Recursos que outros cobram caro — aqui são grátis.
               </p>
             </div>
 
@@ -507,7 +508,7 @@ export function ThemeBrutalist() {
                     boxShadow: '0 4px 20px rgba(124,58,237,0.25)',
                   }}
                 >
-                  Começar agora — é grátis
+                  Criar minha bio page grátis
                 </button>
               </Link>
             </div>
@@ -550,15 +551,15 @@ export function ThemeBrutalist() {
               className="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight"
               style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
             >
-              Pronto para criar sua{' '}
+              Seu link na bio pode{' '}
               <br className="hidden sm:block" />
-              <span style={{ color: '#c084fc' }}>landing page</span>?
+              ser <span style={{ color: '#c084fc' }}>muito mais</span>.
             </h2>
             <p
               className="mt-6 text-base sm:text-lg leading-relaxed max-w-lg mx-auto"
               style={{ color: 'rgba(255,255,255,0.4)' }}
             >
-              Comece agora. Grátis, rápido e sem cartão de crédito.
+              Crie sua bio page em 2 minutos. Grátis pra sempre, sem cartão de crédito.
             </p>
             <Link to="/register">
               <button
@@ -568,12 +569,12 @@ export function ThemeBrutalist() {
                   boxShadow: '0 8px 40px rgba(124,58,237,0.35)',
                 }}
               >
-                Criar conta grátis
+                Criar minha bio page grátis
                 <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </Link>
             <p className="mt-5 text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-              Sem compromisso · Cancele quando quiser
+              Grátis pra sempre · Sem cartão de crédito · Sem limites
             </p>
           </div>
         </div>
@@ -584,7 +585,7 @@ export function ThemeBrutalist() {
 
 /* ── Static data ── */
 
-const HIGHLIGHTS = ['5 Temas', 'Drag & Drop', 'Múltiplas Páginas']
+const HIGHLIGHTS = ['Grátis pra sempre', 'Links ilimitados', 'Tracking Facebook', 'Personalização total']
 
 /* ── Demo profiles data ── */
 
@@ -856,39 +857,39 @@ function DemoPattern({ type, accent }: { type: string; accent: string }) {
 
 const ADVANTAGES = [
   {
-    icon: <Palette className="w-5 h-5" style={{ color: '#c084fc' }} />,
-    title: '5 Temas Profissionais',
-    desc: 'Light, dark, gradient, neon e glassmorphism — escolha o visual que combina com você.',
-    bg: 'linear-gradient(145deg, #1a0e3a 0%, #2a1860 50%, #1a0e3a 100%)',
-    iconBg: 'rgba(124,58,237,0.12)',
-    accent: '#c084fc',
-    glow: 'rgba(192,132,252,0.15)',
+    icon: <BadgeCheck className="w-5 h-5" style={{ color: '#4ade80' }} />,
+    title: '100% Grátis',
+    desc: 'Todos os recursos liberados, sem plano pago escondido. Sem pegadinha.',
+    bg: 'linear-gradient(145deg, #0a1f14 0%, #14352a 50%, #0a1f14 100%)',
+    iconBg: 'rgba(74,222,128,0.12)',
+    accent: '#4ade80',
+    glow: 'rgba(74,222,128,0.15)',
   },
   {
-    icon: <GripVertical className="w-5 h-5" style={{ color: '#f0abfc' }} />,
-    title: 'Drag & Drop Intuitivo',
-    desc: 'Reordene seus links arrastando e soltando. Sem código, sem complicação.',
+    icon: <Activity className="w-5 h-5" style={{ color: '#f0abfc' }} />,
+    title: 'Facebook Pixel Integrado',
+    desc: 'Rastreie conversões direto da sua bio page. Grátis, sem ferramentas extras.',
     bg: 'linear-gradient(145deg, #200d38 0%, #3b1868 50%, #200d38 100%)',
     iconBg: 'rgba(240,171,252,0.10)',
     accent: '#f0abfc',
     glow: 'rgba(240,171,252,0.12)',
   },
   {
-    icon: <Layers className="w-5 h-5" style={{ color: '#a78bfa' }} />,
-    title: 'Múltiplas Páginas',
-    desc: 'Crie quantas landing pages quiser em uma única conta. Sem limites.',
-    bg: 'linear-gradient(145deg, #150c2a 0%, #241852 50%, #150c2a 100%)',
-    iconBg: 'rgba(167,139,250,0.10)',
-    accent: '#a78bfa',
-    glow: 'rgba(167,139,250,0.12)',
+    icon: <Infinity className="w-5 h-5" style={{ color: '#38bdf8' }} />,
+    title: 'Links Ilimitados',
+    desc: 'Adicione quantos links quiser. Sem trava, sem upgrade forçado.',
+    bg: 'linear-gradient(145deg, #0a1828 0%, #143050 50%, #0a1828 100%)',
+    iconBg: 'rgba(56,189,248,0.12)',
+    accent: '#38bdf8',
+    glow: 'rgba(56,189,248,0.15)',
   },
   {
-    icon: <Globe className="w-5 h-5" style={{ color: '#818cf8' }} />,
-    title: 'Link Público Memorável',
-    desc: 'Compartilhe rapli.io/seunome — fácil de lembrar.',
-    bg: 'linear-gradient(145deg, #100c24 0%, #1e184a 50%, #100c24 100%)',
-    iconBg: 'rgba(129,140,248,0.10)',
-    accent: '#818cf8',
-    glow: 'rgba(129,140,248,0.12)',
+    icon: <SlidersHorizontal className="w-5 h-5" style={{ color: '#fb923c' }} />,
+    title: 'Personalização Total',
+    desc: 'Temas, cores, fontes e avatar — cada detalhe do seu jeito.',
+    bg: 'linear-gradient(145deg, #1f1008 0%, #3a2010 50%, #1f1008 100%)',
+    iconBg: 'rgba(251,146,60,0.12)',
+    accent: '#fb923c',
+    glow: 'rgba(251,146,60,0.15)',
   },
 ]

@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react'
 import { cn } from '../../lib/utils'
 import { Avatar } from '../ui/Avatar'
 import { getTheme } from '../../themes'
@@ -17,10 +18,10 @@ interface PagePreviewProps {
   socialLinks?: SocialLink[]
 }
 
-export function PagePreview({ title, bio, theme: themeName, avatarUrl, links, customization, socialLinks = [] }: PagePreviewProps) {
+function PagePreviewInner({ title, bio, theme: themeName, avatarUrl, links, customization, socialLinks = [] }: PagePreviewProps) {
   const theme = getTheme(themeName)
   const resolved = resolveStyles(theme, customization)
-  const activeLinks = links.filter((l) => l.is_active)
+  const activeLinks = useMemo(() => links.filter((l) => l.is_active), [links])
 
   return (
     <div className="flex justify-center">
@@ -147,3 +148,5 @@ export function PagePreview({ title, bio, theme: themeName, avatarUrl, links, cu
     </div>
   )
 }
+
+export const PagePreview = memo(PagePreviewInner)

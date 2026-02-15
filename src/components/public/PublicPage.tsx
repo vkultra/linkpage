@@ -4,7 +4,6 @@ import { PublicLinkItem } from './PublicLinkItem'
 import { SocialIconsBar } from './SocialIconsBar'
 import { resolveStyles } from '../../themes/resolve'
 import type { LandingPage, Link, ThemeConfig, PageCustomization, SocialLink } from '../../types'
-import DOMPurify from 'dompurify'
 
 interface PublicPageProps {
   page: LandingPage
@@ -18,7 +17,7 @@ interface PublicPageProps {
 export function PublicPage({ page, links, theme, profileName, profileAvatar, customization }: PublicPageProps) {
   const activeLinks = links.filter((l) => l.is_active)
   const avatarSrc = page.avatar_url ?? profileAvatar
-  const sanitizedBio = page.bio ? DOMPurify.sanitize(page.bio) : ''
+  const hasBio = !!page.bio
   const resolved = resolveStyles(theme, customization)
   const socialLinks: SocialLink[] = customization?.socialLinks ?? []
 
@@ -53,12 +52,13 @@ export function PublicPage({ page, links, theme, profileName, profileAvatar, cus
             {page.title || profileName}
           </h1>
 
-          {sanitizedBio && (
+          {hasBio && (
             <p
-              className={cn('mt-2 text-sm line-clamp-3', resolved.textSecondary.className)}
+              className={cn('mt-2 whitespace-pre-wrap text-sm line-clamp-3', resolved.textSecondary.className)}
               style={resolved.textSecondary.style}
-              dangerouslySetInnerHTML={{ __html: sanitizedBio }}
-            />
+            >
+              {page.bio}
+            </p>
           )}
 
           {/* Social Icons — inside profile card */}

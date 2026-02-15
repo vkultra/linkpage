@@ -1,4 +1,5 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { useDashboardTheme } from '../../hooks/useDashboardTheme'
 import { signOut } from '../../services/auth.service'
@@ -11,11 +12,16 @@ export function DashboardLayout() {
   const { theme, toggleTheme } = useDashboardTheme()
   const navigate = useNavigate()
 
+  const [signingOut, setSigningOut] = useState(false)
+
   async function handleSignOut() {
+    if (signingOut) return
+    setSigningOut(true)
     try {
       await signOut()
       navigate('/login', { replace: true })
     } catch {
+      setSigningOut(false)
       toast.error('Erro ao sair')
     }
   }
@@ -32,26 +38,40 @@ export function DashboardLayout() {
           </Link>
 
           <nav className="flex items-center gap-1">
-            <Link
+            <NavLink
               to="/dashboard"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700"
+              end
+              className={({ isActive }) =>
+                `flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium ${
+                  isActive
+                    ? 'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-slate-50'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700'
+                }`
+              }
             >
               <LayoutDashboard className="h-4 w-4" />
               <span className="hidden sm:inline">Páginas</span>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/dashboard/settings"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700"
+              className={({ isActive }) =>
+                `flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium ${
+                  isActive
+                    ? 'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-slate-50'
+                    : 'text-gray-700 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700'
+                }`
+              }
             >
               <Settings className="h-4 w-4" />
               <span className="hidden sm:inline">Perfil</span>
-            </Link>
+            </NavLink>
             <button
               onClick={handleSignOut}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700"
+              disabled={signingOut}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-700"
             >
               <LogOut className="h-4 w-4" />
-              <span className="hidden sm:inline">Sair</span>
+              <span className="hidden sm:inline">{signingOut ? 'Saindo...' : 'Sair'}</span>
             </button>
             <button
               onClick={toggleTheme}

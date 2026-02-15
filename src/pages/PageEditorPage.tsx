@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useParams, useNavigate, useBeforeUnload } from 'react-router-dom'
 import { getLandingPage, updateLandingPage } from '../services/landing-page.service'
 import { useLinks } from '../hooks/useLinks'
+import { useAuth } from '../hooks/useAuth'
 import { useFileUpload } from '../hooks/useFileUpload'
 import { LinkList } from '../components/dashboard/LinkList'
 import { LinkForm } from '../components/dashboard/LinkForm'
@@ -20,7 +21,8 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { PagePreview } from '../components/dashboard/PagePreview'
 import { getTheme } from '../themes'
 import { ArrowLeft, Plus, Save, Type } from 'lucide-react'
-import type { LandingPage, ThemeName, PageCustomization, CustomColors, ButtonStyle, FontFamily, SocialLink } from '../types'
+import type { LandingPage, ThemeName, PageCustomization, CustomColors, ButtonStyle, FontFamily, SocialLink, Link } from '../types'
+import type { Json } from '../types/database'
 import toast from 'react-hot-toast'
 
 function parseCustomization(raw: unknown): PageCustomization {
@@ -33,6 +35,7 @@ function parseCustomization(raw: unknown): PageCustomization {
 export function PageEditorPage() {
   const { pageId } = useParams<{ pageId: string }>()
   const navigate = useNavigate()
+  const { user } = useAuth()
   const { links, loading: linksLoading, create, update: updateLink, remove, reorder } = useLinks(pageId)
   const { upload, uploading } = useFileUpload()
 
@@ -55,6 +58,16 @@ export function PageEditorPage() {
   const [fontFamily, setFontFamily] = useState<FontFamily>('inter')
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([])
 
+  // Dirty state tracking
+  const [isDirty, setIsDirty] = useState(false)
+  const initialStateRef = useRef<string>('')
+
+  useBeforeUnload(
+    useCallback((e) => {
+      if (isDirty) e.preventDefault()
+    }, [isDirty])
+  )
+
   const fetchPage = useCallback(async () => {
     if (!pageId) return
     try {
@@ -71,6 +84,9 @@ export function PageEditorPage() {
       setButtonStyle(cust.buttonStyle ?? 'rounded')
       setFontFamily(cust.fontFamily ?? 'inter')
       setSocialLinks(cust.socialLinks ?? [])
+
+      initialStateRef.current = JSON.stringify({ title: data.title, slug: data.slug, bio: data.bio, theme: data.theme, avatar_url: data.avatar_url, customization: cust })
+      setIsDirty(false)
     } catch {
       toast.error('Página não encontrada')
       navigate('/dashboard')
@@ -83,6 +99,18 @@ export function PageEditorPage() {
     fetchPage()
   }, [fetchPage])
 
+  // Track changes
+  useEffect(() => {
+    if (!page) return
+    const cust: PageCustomization = {}
+    if (Object.keys(customColors).length > 0) cust.customColors = customColors
+    if (buttonStyle !== 'rounded') cust.buttonStyle = buttonStyle
+    if (fontFamily !== 'inter') cust.fontFamily = fontFamily
+    if (socialLinks.length > 0) cust.socialLinks = socialLinks
+    const current = JSON.stringify({ title, slug, bio, theme, avatar_url: avatarUrl, customization: cust })
+    setIsDirty(current !== initialStateRef.current)
+  }, [page, title, slug, bio, theme, avatarUrl, customColors, buttonStyle, fontFamily, socialLinks])
+
   function buildCustomization(): PageCustomization {
     const cust: PageCustomization = {}
     if (Object.keys(customColors).length > 0) cust.customColors = customColors
@@ -93,19 +121,21 @@ export function PageEditorPage() {
   }
 
   async function handleSave() {
-    if (!pageId) return
+    if (!pageId || !user) return
     setSaving(true)
     try {
       const customization = buildCustomization()
-      const updated = await updateLandingPage(pageId, {
+      const updated = await updateLandingPage(pageId, user.id, {
         title,
         slug,
         bio,
         theme,
         avatar_url: avatarUrl,
-        customization: (Object.keys(customization).length > 0 ? customization : {}) as import('../types/database').Json,
+        customization: (Object.keys(customization).length > 0 ? customization : {}) as Json,
       })
       setPage(updated)
+      initialStateRef.current = JSON.stringify({ title, slug, bio, theme, avatar_url: avatarUrl, customization })
+      setIsDirty(false)
       toast.success('Página salva!')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao salvar')
@@ -115,11 +145,11 @@ export function PageEditorPage() {
   }
 
   async function handleAvatarUpload(file: File) {
-    if (!pageId) return
+    if (!pageId || !user) return
     try {
       const url = await upload(file, `page-${pageId}`)
       setAvatarUrl(url)
-      await updateLandingPage(pageId, { avatar_url: url })
+      await updateLandingPage(pageId, user.id, { avatar_url: url })
       toast.success('Avatar atualizado!')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao enviar avatar')
@@ -146,7 +176,7 @@ export function PageEditorPage() {
     }
   }
 
-  async function handleUpdateLink(id: string, updates: Partial<Pick<import('../types').Link, 'title' | 'url' | 'is_active'>>) {
+  async function handleUpdateLink(id: string, updates: Partial<Pick<Link, 'title' | 'url' | 'is_active'>>) {
     try {
       await updateLink(id, updates)
     } catch (err) {
