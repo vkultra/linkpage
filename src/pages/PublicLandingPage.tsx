@@ -68,9 +68,22 @@ export function PublicLandingPage() {
 
   const theme = getTheme(page.theme)
   const customization = parseCustomization(page.customization)
+  const themeColor = customization.customColors?.background || theme.themeColor
   const displayName = page.profiles.full_name || page.profiles.username
   const pageTitle = page.title ? `${page.title} — ${displayName}` : displayName
   const pageDescription = page.bio || `Confira os links de ${displayName}`
+
+  // Update theme-color directly via DOM for Safari compatibility
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="theme-color"]')
+    if (meta) {
+      meta.setAttribute('content', themeColor)
+    }
+    return () => {
+      const meta = document.querySelector('meta[name="theme-color"]')
+      if (meta) meta.setAttribute('content', '#ffffff')
+    }
+  }, [themeColor])
 
   return (
     <>
@@ -81,7 +94,7 @@ export function PublicLandingPage() {
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="profile" />
         {page.avatar_url && <meta property="og:image" content={page.avatar_url} />}
-        <meta name="theme-color" content={customization.customColors?.background || theme.themeColor} />
+        <meta name="theme-color" content={themeColor} />
       </Helmet>
       <PublicPage
       page={page}
