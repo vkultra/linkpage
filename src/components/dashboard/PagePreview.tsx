@@ -4,8 +4,8 @@ import { Avatar } from '../ui/Avatar'
 import { getTheme } from '../../themes'
 import { resolveStyles } from '../../themes/resolve'
 import type { Link, ThemeName, PageCustomization, SocialLink } from '../../types'
-import { getFaviconUrl } from '../../lib/utils'
 import { ExternalLink } from 'lucide-react'
+import { LinkFavicon } from '../ui/LinkFavicon'
 import { getPlatform } from '../../lib/social-platforms'
 
 interface PagePreviewProps {
@@ -123,11 +123,7 @@ function PagePreviewInner({ title, bio, theme: themeName, avatarUrl, links, cust
                     )}
                     style={resolved.card.style}
                   >
-                    <img
-                      src={getFaviconUrl(link.url)}
-                      alt=""
-                      className="h-3.5 w-3.5 flex-shrink-0"
-                    />
+                    <LinkFavicon url={link.url} title={link.title} className="h-3.5 w-3.5" />
                     <span
                       className={cn('flex-1 text-center text-xs font-medium', resolved.text.className)}
                       style={resolved.text.style}

@@ -18,6 +18,7 @@ import {
   Infinity,
   SlidersHorizontal,
 } from 'lucide-react'
+import { LinkFavicon } from '../../components/ui/LinkFavicon'
 
 export function ThemeBrutalist() {
   /* ── Scroll-reveal state (advantages section) ── */
@@ -343,12 +344,7 @@ export function ThemeBrutalist() {
                           border: `1px solid ${profile.accent}15`,
                         }}
                       >
-                        <img
-                          src={`https://www.google.com/s2/favicons?domain=${link.domain}&sz=32`}
-                          alt=""
-                          className="w-4 h-4 rounded-sm"
-                          loading="lazy"
-                        />
+                        <LinkFavicon domain={link.domain} className="w-4 h-4" />
                         {link.label}
                       </div>
                     ))}

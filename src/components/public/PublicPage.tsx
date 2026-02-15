@@ -54,7 +54,7 @@ export function PublicPage({ page, links, theme, profileName, profileAvatar, cus
 
           {hasBio && (
             <p
-              className={cn('mt-2 whitespace-pre-wrap text-sm line-clamp-3', resolved.textSecondary.className)}
+              className={cn('mt-2 whitespace-pre-wrap text-sm', resolved.textSecondary.className)}
               style={resolved.textSecondary.style}
             >
               {page.bio}
@@ -105,18 +105,6 @@ export function PublicPage({ page, links, theme, profileName, profileAvatar, cus
           })}
         </div>
 
-        {/* Footer */}
-        <div
-          className="public-link-enter mt-12 text-center"
-          style={{ animationDelay: `${0.3 + activeLinks.length * 0.06 + 0.1}s` }}
-        >
-          <p
-            className={cn('text-xs', resolved.textSecondary.className)}
-            style={resolved.textSecondary.style}
-          >
-            Feito com rapli.io
-          </p>
-        </div>
       </div>
     </div>
   )

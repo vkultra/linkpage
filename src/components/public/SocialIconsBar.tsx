@@ -1,5 +1,6 @@
 import type { SocialLink, StyleProp } from '../../types'
 import { getPlatform } from '../../lib/social-platforms'
+import { cn } from '../../lib/utils'
 
 interface SocialIconsBarProps {
   links: SocialLink[]
@@ -10,7 +11,7 @@ export function SocialIconsBar({ links, textStyle }: SocialIconsBarProps) {
   if (links.length === 0) return null
 
   return (
-    <div className="mb-6 flex flex-wrap justify-center gap-3">
+    <div className={cn('mb-6 flex flex-wrap justify-center gap-3', textStyle.className)}>
       {links.map((link) => {
         const platform = getPlatform(link.platform)
         if (!platform) return null

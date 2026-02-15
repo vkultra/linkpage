@@ -1,7 +1,7 @@
 import { cn } from '../../lib/utils'
-import { getFaviconUrl } from '../../lib/utils'
 import type { ResolvedStyles } from '../../types'
 import { ExternalLink } from 'lucide-react'
+import { LinkFavicon } from '../ui/LinkFavicon'
 
 interface PublicLinkItemProps {
   title: string
@@ -23,12 +23,7 @@ export function PublicLinkItem({ title, url, resolved }: PublicLinkItemProps) {
       )}
       style={resolved.card.style}
     >
-      <img
-        src={getFaviconUrl(url)}
-        alt=""
-        className="h-6 w-6 flex-shrink-0 rounded-sm"
-        loading="lazy"
-      />
+      <LinkFavicon url={url} title={title} className="h-6 w-6" />
       <span
         className={cn('flex-1 text-center text-[15px] font-medium', resolved.text.className)}
         style={resolved.card.style?.borderColor ? resolved.text.style : (resolved.card.style?.backgroundColor ? { color: resolved.text.style?.color } : undefined)}

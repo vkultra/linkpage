@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Link } from '../../types'
-import { getFaviconUrl } from '../../lib/utils'
+import { LinkFavicon } from '../ui/LinkFavicon'
 import { LinkForm } from './LinkForm'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
@@ -101,12 +101,7 @@ export function LinkItem({ link, onUpdate, onDelete, dragHandleProps }: LinkItem
       </button>
 
       {link.url && (
-        <img
-          src={getFaviconUrl(link.url)}
-          alt=""
-          className="h-5 w-5 flex-shrink-0"
-          loading="lazy"
-        />
+        <LinkFavicon url={link.url} title={link.title} className="h-5 w-5" />
       )}
 
       <div className="min-w-0 flex-1">
