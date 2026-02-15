@@ -44,7 +44,7 @@ export function RegisterPage() {
             Criar conta
           </h1>
           <p className="mt-1 text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
-            Comece a criar suas landing pages
+            Comece a criar suas bio pages
           </p>
         </div>
 

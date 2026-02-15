@@ -59,7 +59,7 @@ export function DashboardPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-50">Minhas Páginas</h1>
           <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">
-            Gerencie suas landing pages
+            Gerencie suas bio pages
           </p>
         </div>
         <Button onClick={() => setShowForm(true)}>
@@ -71,7 +71,7 @@ export function DashboardPage() {
       {pages.length === 0 ? (
         <div className="rounded-xl border-2 border-dashed border-gray-300 px-6 py-12 text-center dark:border-slate-600">
           <p className="text-sm text-gray-500 dark:text-slate-400">
-            Você ainda não tem nenhuma landing page.
+            Você ainda não tem nenhuma bio page.
           </p>
           <Button
             variant="secondary"
@@ -99,7 +99,7 @@ export function DashboardPage() {
       <Modal
         open={showForm}
         onClose={() => setShowForm(false)}
-        title="Nova Landing Page"
+        title="Nova Bio Page"
       >
         <PageForm
           onSubmit={handleCreate}

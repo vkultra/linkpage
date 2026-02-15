@@ -60,7 +60,7 @@ export function PageForm({ initialValues, onSubmit, onCancel, submitLabel = 'Sal
       <Input
         id="title"
         label="Título"
-        placeholder="Minha Landing Page"
+        placeholder="Minha Bio Page"
         value={title}
         onChange={(e) => handleTitleChange(e.target.value)}
         error={errors.title}

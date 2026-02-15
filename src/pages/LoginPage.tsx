@@ -44,7 +44,7 @@ export function LoginPage() {
             Entrar no rapli.io
           </h1>
           <p className="mt-1 text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
-            Gerencie suas landing pages
+            Gerencie suas bio pages
           </p>
         </div>
 
