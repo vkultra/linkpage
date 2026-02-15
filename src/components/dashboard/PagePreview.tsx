@@ -61,10 +61,10 @@ function PagePreviewInner({ title, bio, theme: themeName, avatarUrl, links, cust
             </h2>
             {bio && (
               <p
-                className={cn('mt-1 text-xs line-clamp-2', resolved.textSecondary.className)}
+                className={cn('mt-1 text-xs whitespace-pre-wrap', resolved.textSecondary.className)}
                 style={resolved.textSecondary.style}
               >
-                {bio.slice(0, 100)}
+                {bio}
               </p>
             )}
 

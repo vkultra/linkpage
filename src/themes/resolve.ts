@@ -10,6 +10,24 @@ function getButtonRadius(style?: ButtonStyle): string {
   }
 }
 
+/** Map Tailwind text-color classes to hex so SVG fills always have a value */
+function extractTextColor(twClass: string): string | undefined {
+  const map: Record<string, string> = {
+    'text-white': '#ffffff',
+    'text-white/70': 'rgba(255,255,255,0.7)',
+    'text-white/80': 'rgba(255,255,255,0.8)',
+    'text-gray-400': '#9ca3af',
+    'text-gray-500': '#6b7280',
+    'text-gray-900': '#111827',
+    'text-cyan-50': '#ecfeff',
+    'text-cyan-300/70': 'rgba(103,232,249,0.7)',
+  }
+  for (const [cls, hex] of Object.entries(map)) {
+    if (twClass.includes(cls)) return hex
+  }
+  return undefined
+}
+
 const profileCardClasses: Record<ThemeName, string> = {
   light: 'bg-white/70 backdrop-blur-sm shadow-lg border border-gray-200/50 rounded-2xl',
   dark: 'bg-gray-900/50 backdrop-blur-sm shadow-lg border border-gray-700/30 rounded-2xl',
@@ -36,11 +54,11 @@ export function resolveStyles(
 
     text: colors?.text
       ? { style: { color: colors.text } }
-      : { className: theme.text },
+      : { className: theme.text, style: { color: extractTextColor(theme.text) } },
 
     textSecondary: colors?.text
       ? { style: { color: colors.text, opacity: 0.6 } }
-      : { className: theme.textSecondary },
+      : { className: theme.textSecondary, style: { color: extractTextColor(theme.textSecondary) } },
 
     card: (() => {
       if (isOutline) {
