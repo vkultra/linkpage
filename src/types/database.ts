@@ -64,6 +64,60 @@ export type Database = {
           },
         ]
       }
+      facebook_pixels: {
+        Row: {
+          id: string
+          landing_page_id: string
+          user_id: string
+          pixel_id: string
+          access_token: string
+          test_event_code: string | null
+          events: string[]
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          landing_page_id: string
+          user_id: string
+          pixel_id: string
+          access_token: string
+          test_event_code?: string | null
+          events?: string[]
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          landing_page_id?: string
+          user_id?: string
+          pixel_id?: string
+          access_token?: string
+          test_event_code?: string | null
+          events?: string[]
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "facebook_pixels_landing_page_id_fkey"
+            columns: ["landing_page_id"]
+            isOneToOne: true
+            referencedRelation: "landing_pages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "facebook_pixels_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       links: {
         Row: {
           created_at: string

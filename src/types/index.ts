@@ -3,6 +3,28 @@ import type { Database } from './database'
 export type Profile = Database['public']['Tables']['profiles']['Row']
 export type LandingPage = Database['public']['Tables']['landing_pages']['Row']
 export type Link = Database['public']['Tables']['links']['Row']
+export type FacebookPixel = Database['public']['Tables']['facebook_pixels']['Row']
+
+export type FacebookEventName =
+  | 'PageView'
+  | 'Lead'
+  | 'ViewContent'
+  | 'Purchase'
+  | 'Contact'
+  | 'CompleteRegistration'
+  | 'AddToCart'
+  | 'Search'
+
+export const FACEBOOK_EVENTS: { value: FacebookEventName; label: string }[] = [
+  { value: 'PageView', label: 'Visualização de Página' },
+  { value: 'Lead', label: 'Lead' },
+  { value: 'ViewContent', label: 'Visualização de Conteúdo' },
+  { value: 'Purchase', label: 'Compra' },
+  { value: 'Contact', label: 'Contato' },
+  { value: 'CompleteRegistration', label: 'Registro Completo' },
+  { value: 'AddToCart', label: 'Adicionar ao Carrinho' },
+  { value: 'Search', label: 'Busca' },
+]
 
 export type ThemeName = 'light' | 'dark' | 'gradient' | 'neon' | 'glassmorphism'
 

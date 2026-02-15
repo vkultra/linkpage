@@ -59,6 +59,16 @@ export const fileUploadSchema = z.object({
   ),
 })
 
+export const facebookPixelSchema = z.object({
+  pixel_id: z.string().min(1, 'Pixel ID é obrigatório').regex(/^\d+$/, 'Pixel ID deve conter apenas números'),
+  access_token: z.string().min(1, 'Access Token é obrigatório'),
+  test_event_code: z.string().optional(),
+  events: z.array(z.string()).min(1, 'Selecione pelo menos um evento'),
+  is_active: z.boolean().default(true),
+})
+
+export type FacebookPixelInput = z.infer<typeof facebookPixelSchema>
+
 export type RegisterInput = z.infer<typeof registerSchema>
 export type LoginInput = z.infer<typeof loginSchema>
 export type LandingPageInput = z.infer<typeof landingPageSchema>

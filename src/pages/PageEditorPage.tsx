@@ -11,6 +11,7 @@ import { CustomColorEditor } from '../components/dashboard/CustomColorEditor'
 import { ButtonStyleSelector } from '../components/dashboard/ButtonStyleSelector'
 import { FontSelector } from '../components/dashboard/FontSelector'
 import { SocialLinksEditor } from '../components/dashboard/SocialLinksEditor'
+import { FacebookPixelConfig } from '../components/dashboard/FacebookPixelConfig'
 import { Input } from '../components/ui/Input'
 import { Textarea } from '../components/ui/Textarea'
 import { Button } from '../components/ui/Button'
@@ -286,6 +287,9 @@ export function PageEditorPage() {
               />
             )}
           </Card>
+
+          {/* Facebook Pixel */}
+          <FacebookPixelConfig pageId={pageId!} />
 
           {/* Botão salvar */}
           <div className="flex justify-end">
