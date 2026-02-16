@@ -2,6 +2,14 @@ import { supabase } from '../lib/supabase'
 import type { LandingPage } from '../types'
 import type { LandingPageInput } from '../lib/validators'
 
+// In-memory cache for public pages (60s TTL)
+const CACHE_TTL_MS = 60_000
+const pageCache = new Map<string, { data: PublicPageData; timestamp: number }>()
+
+function getCacheKey(username: string, slug?: string): string {
+  return slug ? `${username}/${slug}` : username
+}
+
 export async function getLandingPages(userId: string): Promise<LandingPage[]> {
   const { data, error } = await supabase
     .from('landing_pages')
@@ -32,6 +40,15 @@ export async function getPublicPage(
   username: string,
   slug?: string
 ): Promise<PublicPageData> {
+  const key = getCacheKey(username, slug)
+  const cached = pageCache.get(key)
+  const now = Date.now()
+
+  // Return cached data if fresh
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data
+  }
+
   const { data, error } = await supabase.rpc('get_public_page', {
     p_username: username,
     p_slug: slug || null,
@@ -41,10 +58,15 @@ export async function getPublicPage(
 
   const result = data as { profile: Record<string, unknown>; page: Record<string, unknown>; links: Record<string, unknown>[] }
 
-  return {
+  const pageData: PublicPageData = {
     page: { ...result.page, profiles: result.profile } as PublicPageData['page'],
     links: result.links as PublicPageData['links'],
   }
+
+  // Store in cache
+  pageCache.set(key, { data: pageData, timestamp: now })
+
+  return pageData
 }
 
 /** @deprecated Use getPublicPage instead — kept for backwards compatibility */
