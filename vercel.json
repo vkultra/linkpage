@@ -8,7 +8,19 @@
       ]
     },
     {
-      "source": "/(?!dashboard|api|_next)(.*)",
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, s-maxage=60, stale-while-revalidate=300" }
+      ]
+    },
+    {
+      "source": "/:username",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, s-maxage=60, stale-while-revalidate=300" }
+      ]
+    },
+    {
+      "source": "/:username/:slug",
       "headers": [
         { "key": "Cache-Control", "value": "public, s-maxage=60, stale-while-revalidate=300" }
       ]
