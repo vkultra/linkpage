@@ -52,6 +52,8 @@ export function LinkFavicon({ url, domain, title, className = 'h-5 w-5' }: LinkF
     <img
       src={faviconUrl}
       alt=""
+      width={20}
+      height={20}
       className={cn('flex-shrink-0 rounded-sm object-contain', className)}
       loading="lazy"
       onError={() => setFailed(true)}
