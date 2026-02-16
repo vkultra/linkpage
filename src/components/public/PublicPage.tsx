@@ -1,4 +1,5 @@
-import { cn } from '../../lib/utils'
+import { useMemo } from 'react'
+import { cn, getOptimizedAvatarUrl } from '../../lib/utils'
 import { Avatar } from '../ui/Avatar'
 import { PublicLinkItem } from './PublicLinkItem'
 import { SocialIconsBar } from './SocialIconsBar'
@@ -17,9 +18,9 @@ interface PublicPageProps {
 
 export function PublicPage({ page, links, theme, profileName, profileAvatar, customization, onLinkClick }: PublicPageProps) {
   const activeLinks = links.filter((l) => l.is_active)
-  const avatarSrc = page.avatar_url ?? profileAvatar
+  const avatarSrc = getOptimizedAvatarUrl(page.avatar_url ?? profileAvatar, 'lg')
   const hasBio = !!page.bio
-  const resolved = resolveStyles(theme, customization)
+  const resolved = useMemo(() => resolveStyles(theme, customization), [theme, customization])
   const socialLinks: SocialLink[] = customization?.socialLinks ?? []
 
   return (

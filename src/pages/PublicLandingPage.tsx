@@ -7,6 +7,7 @@ import { PublicPage } from '../components/public/PublicPage'
 import { NotFound } from '../components/public/NotFound'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { loadFont } from '../lib/fonts'
+import { getOptimizedAvatarUrl } from '../lib/utils'
 import { useFbTracking } from '../hooks/useFbTracking'
 import { trackAnalyticsEvent } from '../lib/analytics-tracking'
 import type { LandingPage, Link, PageCustomization, FontFamily } from '../types'
@@ -113,7 +114,7 @@ export function PublicLandingPage({ username: usernameProp }: { username?: strin
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="profile" />
-        {page.avatar_url && <meta property="og:image" content={page.avatar_url} />}
+        {page.avatar_url && <meta property="og:image" content={getOptimizedAvatarUrl(page.avatar_url, 'og')} />}
       </Helmet>
       <PublicPage
       page={page}
