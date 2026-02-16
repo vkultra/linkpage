@@ -6,8 +6,8 @@ import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
 import { AppRouter } from './router'
 import { captureException } from './lib/sentry'
-import '@fontsource-variable/inter'
-import '@fontsource-variable/bricolage-grotesque'
+import '@fontsource-variable/inter/standard.css'
+import '@fontsource-variable/bricolage-grotesque/standard.css'
 import './index.css'
 
 class ErrorBoundary extends Component<
