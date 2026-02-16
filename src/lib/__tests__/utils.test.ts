@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { cn, slugify, getFaviconUrl } from '../utils'
+import { cn, slugify, getFaviconUrl, getOptimizedAvatarUrl } from '../utils'
 
 describe('cn', () => {
   it('combina classes simples', () => {
@@ -72,5 +72,33 @@ describe('getFaviconUrl', () => {
 
   it('retorna string vazia para URL inválida', () => {
     expect(getFaviconUrl('not-a-url')).toBe('')
+  })
+})
+
+describe('getOptimizedAvatarUrl', () => {
+  const supabaseUrl = 'https://abc.supabase.co/storage/v1/object/public/avatars/user/photo.jpg'
+
+  it('adds transform params for supabase URLs', () => {
+    const result = getOptimizedAvatarUrl(supabaseUrl, 'lg')
+    expect(result).toContain('width=256')
+    expect(result).toContain('height=256')
+    expect(result).toContain('resize=cover')
+  })
+
+  it('returns different sizes', () => {
+    expect(getOptimizedAvatarUrl(supabaseUrl, 'thumb')).toContain('width=64')
+    expect(getOptimizedAvatarUrl(supabaseUrl, 'md')).toContain('width=128')
+    expect(getOptimizedAvatarUrl(supabaseUrl, 'lg')).toContain('width=256')
+    expect(getOptimizedAvatarUrl(supabaseUrl, 'og')).toContain('width=512')
+  })
+
+  it('returns original URL for non-supabase URLs', () => {
+    const external = 'https://example.com/avatar.jpg'
+    expect(getOptimizedAvatarUrl(external, 'lg')).toBe(external)
+  })
+
+  it('returns empty string for null/undefined', () => {
+    expect(getOptimizedAvatarUrl(null, 'lg')).toBe('')
+    expect(getOptimizedAvatarUrl(undefined, 'lg')).toBe('')
   })
 })
