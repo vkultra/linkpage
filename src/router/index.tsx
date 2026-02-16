@@ -1,10 +1,11 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from '../components/auth/ProtectedRoute'
 import { DashboardLayout } from '../components/layout/DashboardLayout'
 import { DashboardThemeProvider } from '../contexts/DashboardThemeContext'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { getSubdomainUsername } from '../lib/subdomain'
+import { initSentry } from '../lib/sentry'
 
 // Retry dynamic import with page reload on chunk load failure (stale deploy)
 function lazyRetry<T extends Record<string, unknown>>(
@@ -44,6 +45,12 @@ function PageFallback() {
 }
 
 export function AppRouter() {
+  useEffect(() => {
+    if (window.location.pathname.startsWith('/dashboard')) {
+      initSentry()
+    }
+  }, [])
+
   const subdomainUser = getSubdomainUsername()
 
   // Subdomínio (ex: vkultra.rapli.io) → apenas rotas públicas
