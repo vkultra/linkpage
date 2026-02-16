@@ -43,37 +43,41 @@ export function PublicLandingPage({ username: usernameProp }: { username?: strin
     trackAnalyticsEvent({ landingPageId: page.id, eventType: 'click', linkId })
   }, [page?.id])
 
-  const fetchData = useCallback(async () => {
-    if (!username) return
-
-    // Validate username format before querying
-    const usernameRegex = /^[a-z0-9][a-z0-9-]{0,28}[a-z0-9]$/
-    if (!usernameRegex.test(username)) {
-      setNotFound(true)
-      setLoading(false)
-      return
-    }
-
-    try {
-      const { page: pageData, links: linksData } = await getPublicPage(username, slug)
-      setPage(pageData)
-      setLinks(linksData)
-
-      // Load custom font
-      const cust = parseCustomization(pageData.customization)
-      if (cust.fontFamily && cust.fontFamily !== 'inter') {
-        loadFont(cust.fontFamily as FontFamily)
-      }
-    } catch {
-      setNotFound(true)
-    } finally {
-      setLoading(false)
-    }
-  }, [username, slug])
-
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    let stale = false
+
+    async function load() {
+      if (!username) return
+
+      const usernameRegex = /^[a-z0-9][a-z0-9-]{0,28}[a-z0-9]$/
+      if (!usernameRegex.test(username)) {
+        if (!stale) { setNotFound(true); setLoading(false) }
+        return
+      }
+
+      try {
+        const { page: pageData, links: linksData } = await getPublicPage(username, slug)
+        if (stale) return
+        setPage(pageData)
+        setLinks(linksData)
+
+        const cust = parseCustomization(pageData.customization)
+        if (cust.fontFamily && cust.fontFamily !== 'inter') {
+          loadFont(cust.fontFamily as FontFamily)
+        }
+      } catch {
+        if (!stale) setNotFound(true)
+      } finally {
+        if (!stale) setLoading(false)
+      }
+    }
+
+    setLoading(true)
+    setNotFound(false)
+    load()
+
+    return () => { stale = true }
+  }, [username, slug])
 
   // Compute theme-color before early returns (hooks must be unconditional)
   const themeColor = page
