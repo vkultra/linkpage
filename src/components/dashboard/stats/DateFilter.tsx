@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { DayPicker, getDefaultClassNames, type DateRange } from 'react-day-picker'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
 import { ptBR } from 'date-fns/locale'
+dayjs.locale('pt-br')
 import { Calendar, ChevronDown } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 import 'react-day-picker/style.css'
@@ -23,22 +25,19 @@ const presets: { value: Preset; label: string }[] = [
 ]
 
 function formatRange(start: Date, end: Date): string {
-  const sameDay = start.toDateString() === end.toDateString()
-  const sameMonth =
-    start.getMonth() === end.getMonth() &&
-    start.getFullYear() === end.getFullYear()
-  const sameYear = start.getFullYear() === end.getFullYear()
+  const s = dayjs(start)
+  const e = dayjs(end)
 
-  if (sameDay) {
-    return format(start, "dd 'de' MMM", { locale: ptBR })
+  if (s.isSame(e, 'day')) {
+    return s.format('DD [de] MMM')
   }
-  if (sameMonth) {
-    return `${format(start, 'dd')} – ${format(end, 'dd MMM', { locale: ptBR })}`
+  if (s.isSame(e, 'month')) {
+    return `${s.format('DD')} – ${e.format('DD MMM')}`
   }
-  if (sameYear) {
-    return `${format(start, 'dd MMM', { locale: ptBR })} – ${format(end, 'dd MMM', { locale: ptBR })}`
+  if (s.isSame(e, 'year')) {
+    return `${s.format('DD MMM')} – ${e.format('DD MMM')}`
   }
-  return `${format(start, "dd MMM ''yy", { locale: ptBR })} – ${format(end, "dd MMM ''yy", { locale: ptBR })}`
+  return `${s.format("DD MMM 'YY")} – ${e.format("DD MMM 'YY")}`
 }
 
 export function DateFilter({

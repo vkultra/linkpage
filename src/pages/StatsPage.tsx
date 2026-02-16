@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { startOfDay, startOfMonth, endOfMonth, subMonths } from 'date-fns'
+import dayjs from 'dayjs'
 import { useAnalytics } from '../hooks/useAnalytics'
 import { PageSelector } from '../components/dashboard/stats/PageSelector'
 import { DateFilter, type Preset } from '../components/dashboard/stats/DateFilter'
@@ -16,25 +16,17 @@ function getPresetDates(preset: Preset): { start: Date; end: Date } {
 
   switch (preset) {
     case 'today':
-      return { start: startOfDay(now), end: now }
-    case '7d': {
-      const start = new Date(now)
-      start.setDate(start.getDate() - 7)
-      start.setHours(0, 0, 0, 0)
-      return { start, end: now }
-    }
+      return { start: dayjs(now).startOf('day').toDate(), end: now }
+    case '7d':
+      return { start: dayjs(now).subtract(7, 'day').startOf('day').toDate(), end: now }
     case 'month':
-      return { start: startOfMonth(now), end: now }
+      return { start: dayjs(now).startOf('month').toDate(), end: now }
     case 'last-month': {
-      const lastMonth = subMonths(now, 1)
-      return { start: startOfMonth(lastMonth), end: endOfMonth(lastMonth) }
+      const lastMonth = dayjs(now).subtract(1, 'month')
+      return { start: lastMonth.startOf('month').toDate(), end: lastMonth.endOf('month').toDate() }
     }
-    default: {
-      const start = new Date(now)
-      start.setDate(start.getDate() - 7)
-      start.setHours(0, 0, 0, 0)
-      return { start, end: now }
-    }
+    default:
+      return { start: dayjs(now).subtract(7, 'day').startOf('day').toDate(), end: now }
   }
 }
 
